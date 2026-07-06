@@ -213,17 +213,94 @@
     .village-footer{background:#5c3a1e;border-top:4px solid #3d2209;padding:12px 20px;text-align:center}
     .village-footer p{font-family:'Bangers',cursive;font-size:13px;color:#c4843b;letter-spacing:1px}
 
-    @media(max-width:600px){
-      .nav-inner{height:80px;gap:0}
-      .nav-item{max-width:72px}
-      .nav-item svg{transform:scale(.78);transform-origin:bottom center}
-      .hut-label{font-size:9px}
-      .main-title{font-size:32px}
+    /* ── RESPONSIVE TABLETTE ── */
+    @media(max-width:768px){
+      .char-zone{flex-wrap:wrap;justify-content:center;gap:12px}
+      .char-img-frame{width:clamp(80px,20vw,160px) !important;height:clamp(100px,25vw,200px) !important}
       .days-grid{grid-template-columns:1fr}
-      .char-zone{gap:8px}
-      .onomatopee{font-size:20px;margin:0 5px}
-      .nav-countdown{min-width:110px}
-      .countdown-numbers{font-size:13px}
+      .practical-grid{grid-template-columns:repeat(2,1fr)}
+      .info-grid{grid-template-columns:repeat(2,1fr)}
+      .speech-bubble{font-size:14px;padding:12px 14px;max-width:95vw}
+      .nav-countdown{min-width:200px;padding:6px 16px}
+      .countdown-label{font-size:14px}
+      .countdown-numbers{font-size:22px}
+      .video-section{padding:0 8px}
+    }
+
+    /* ── RESPONSIVE MOBILE ── */
+    @media(max-width:600px){
+      /* Navigation */
+      .nav-inner{height:80px;gap:0}
+      .nav-item{max-width:72px;min-width:60px}
+      .nav-item svg{transform:scale(.78);transform-origin:bottom center}
+      .hut-label{font-size:9px;letter-spacing:.4px}
+
+      /* Décompte */
+      .nav-countdown{min-width:90px;padding:4px 8px}
+      .countdown-label{font-size:10px;letter-spacing:1px}
+      .countdown-numbers{font-size:14px}
+
+      /* Titres */
+      .main-title{font-size:clamp(26px,8vw,36px)}
+      .main-subtitle{font-size:clamp(14px,4vw,20px)}
+      .onomatopee{font-size:18px;margin:0 4px}
+      .section-title{font-size:clamp(22px,6vw,36px)}
+
+      /* Personnages — s'adaptent à l'écran */
+      .char-zone{flex-wrap:wrap;justify-content:center;gap:8px;padding:0 4px}
+      .char-slot{flex:0 0 auto}
+      .char-img-frame{width:clamp(70px,28vw,130px) !important;height:clamp(90px,35vw,170px) !important}
+
+      /* Grilles */
+      .days-grid{grid-template-columns:1fr}
+      .practical-grid{grid-template-columns:repeat(2,1fr)}
+      .info-grid{grid-template-columns:1fr}
+
+      /* Bulles */
+      .speech-bubble{font-size:13px;padding:10px 12px;max-width:92vw;margin:14px auto}
+      .speech-bubble.left-tail::after{left:16px}
+      .speech-bubble.left-tail::before{left:20px}
+      .speech-bubble.right-tail::after{right:16px}
+      .speech-bubble.right-tail::before{right:20px}
+
+      /* Parchemin */
+      .parchment{padding:14px 16px;max-width:95vw}
+      .parchment-title{font-size:18px}
+      .parchment-placeholder{font-size:13px;padding:10px}
+
+      /* Formulaire */
+      .form-parchment{padding:16px;max-width:95vw}
+      .radio-group{flex-direction:column;gap:6px}
+      .btn-submit{font-size:18px}
+
+      /* Vidéo */
+      .video-section{padding:0 4px;margin:16px auto}
+
+      /* Photos */
+      .photo-grid{grid-template-columns:repeat(2,1fr)}
+
+      /* Adresse */
+      .adress-bubble{max-width:92vw;font-size:13px}
+
+      /* Carte Google Maps */
+      .map-placeholder iframe{width:100% !important;height:220px !important}
+
+      /* Padding pages */
+      .programme-bg,.infos-bg,.confirm-bg,.photos-bg{padding:16px 10px 40px}
+      .hero{padding-bottom:10px}
+
+      /* Footer */
+      .village-footer p{font-size:11px}
+    }
+
+    /* ── TRÈS PETIT ÉCRAN (≤380px) ── */
+    @media(max-width:380px){
+      .nav-item{max-width:58px;min-width:50px}
+      .nav-item svg{transform:scale(.65);transform-origin:bottom center}
+      .hut-label{font-size:8px}
+      .char-img-frame{width:clamp(60px,25vw,110px) !important;height:clamp(80px,30vw,140px) !important}
+      .onomatopee{font-size:15px;margin:0 2px}
+      .countdown-numbers{font-size:12px}
     }
   </style>
 </head>
