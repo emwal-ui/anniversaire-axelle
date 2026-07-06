@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Axelle a 30 ans ! 🐗⚔️</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Patrick+Hand&family=Fredoka+One&display=swap" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Patrick Hand',cursive,sans-serif;background:#2d5016;min-height:100vh;overflow-x:hidden}
+    .sky{background:linear-gradient(180deg,#87CEEB 0%,#B0E0FF 60%,#d4f0a0 100%);position:relative;min-height:100vh;overflow:hidden}
+
+    /* ── NAVIGATION VILLAGE ── */
+    .nav{position:sticky;top:0;z-index:100;background:linear-gradient(180deg,#5ba3d9 0%,#7ec8e3 50%,#6aa832 100%);border-bottom:4px solid #3d2209;box-shadow:0 4px 12px rgba(0,0,0,.4);overflow:hidden}
+    .nav-ground{position:absolute;bottom:0;left:0;right:0;height:18px;background:linear-gradient(180deg,#6aa832 0%,#4a8022 100%)}
+    .nav-inner{display:flex;align-items:flex-end;justify-content:center;gap:0;max-width:900px;margin:0 auto;padding:0;height:100px;position:relative}
+    /* chaque hutte */
+    .nav-item{background:none;border:none;padding:0;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;position:relative;transition:transform .15s;outline:none;flex:1;max-width:170px;min-width:80px;height:100px}
+    .nav-item:hover .hut-body,.nav-item.active .hut-body{filter:brightness(1.15)}
+    .nav-item:hover{transform:translateY(-4px)}
+    .nav-item.active{transform:translateY(-5px)}
+    .nav-item.active .hut-label{color:#ffe800;text-shadow:0 0 6px rgba(255,200,0,.6),1px 1px 0 #3d2209}
+    .hut-label{font-family:'Bangers',cursive;font-size:12px;letter-spacing:.8px;color:#fff;text-shadow:1px 1px 2px #3d2209;text-align:center;line-height:1.2;margin-bottom:2px;position:relative;z-index:2;padding:0 4px}
+    /* active indicator: little flag */
+    .nav-item.active .hut-flag{opacity:1}
+    .hut-flag{position:absolute;top:2px;right:calc(50% - 22px);opacity:0;font-size:10px;transition:opacity .2s}
+    /* smoke puff */
+    .hut-smoke{position:absolute;top:8px;left:50%;transform:translateX(-6px);pointer-events:none}
+    .smoke-ring{border-radius:50%;background:rgba(255,255,255,.55);position:absolute;animation:puffUp 2.5s ease-out infinite}
+    .smoke-ring:nth-child(1){width:8px;height:8px;left:0;top:0;animation-delay:0s}
+    .smoke-ring:nth-child(2){width:6px;height:6px;left:3px;top:-8px;animation-delay:.6s}
+    .smoke-ring:nth-child(3){width:5px;height:5px;left:1px;top:-15px;animation-delay:1.2s}
+    @keyframes puffUp{0%{opacity:.8;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-18px) scale(2.2)}}
+
+    /* ── DÉCOMPTE ── */
+    .nav-countdown{display:inline-flex;margin:0 auto 16px;flex-direction:column;align-items:center;font-family:'Bangers',cursive;background:linear-gradient(135deg,#8b0000 0%,#5c0000 100%);border:3px solid #3d0000;border-radius:8px;padding:8px 24px;box-shadow:2px 2px 0 #3d0000;margin-right:4px;min-width:280px;text-align:center}
+    .countdown-label{font-size:18px;letter-spacing:2px;color:#c4843b;text-transform:uppercase;line-height:1}
+    .countdown-numbers{font-size:30px;color:#ffe800;letter-spacing:1px;line-height:1.3;text-shadow:1px 1px 0 #3d0000}
+    .countdown-done{font-size:13px;color:#ffe800;letter-spacing:1px;line-height:1.3;text-align:center}
+
+/* ── CASQUES ROMAINS QUI TOMBENT ── */
+.casque {
+  position: fixed;
+  top: -80px;
+  animation: tomberCasque linear infinite;
+  z-index: 50;
+  pointer-events: none;
+  user-select: none;
+}
+@keyframes tomberCasque {
+  0%   { transform: translateY(0) rotate(0deg);   opacity: 1; }
+  80%  { opacity: 1; }
+  100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+}
+
+    /* ── PAGES ── */
+    .page{display:none}.page.active{display:block}
+
+    /* ── ZONES PERSONNAGES ── */
+    .char-zone{position:relative;display:flex;align-items:flex-end;justify-content:space-between;max-width:700px;margin:0 auto;padding:0 8px;gap:16px}
+    .char-slot{display:flex;flex-direction:column;align-items:center;gap:6px}
+    .char-img-frame{border:3px solid #1a1a1a;border-radius:12px;background:rgba(255,255,255,0.15);overflow:hidden;position:relative;box-shadow:3px 3px 0 #1a1a1a;cursor:pointer;transition:transform .15s}
+    .char-img-frame:hover{transform:scale(1.03)}
+    .char-img-frame img{width:100%;height:100%;object-fit:contain;display:block}
+    .char-img-frame .empty-slot{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:8px;background:rgba(255,255,255,0.25)}
+    .char-img-frame .empty-slot .slot-icon{font-size:28px}
+    .char-img-frame .empty-slot .slot-label{font-family:'Bangers',cursive;font-size:12px;letter-spacing:1px;color:#1a1a1a;text-align:center;line-height:1.3}
+    .char-img-frame .empty-slot .slot-hint{font-family:'Patrick Hand',cursive;font-size:10px;color:#444;text-align:center;border:1.5px dashed #666;border-radius:6px;padding:3px 6px;background:rgba(255,255,255,0.5)}
+    .char-name-badge{font-family:'Bangers',cursive;font-size:13px;letter-spacing:1px;background:#cc2200;color:#ffe800;border:2px solid #4d0000;border-radius:20px;padding:2px 12px;box-shadow:1px 1px 0 #4d0000;white-space:nowrap}
+    .char-name-badge.obelix{background:#8b4513;border-color:#3d1a00;box-shadow:1px 1px 0 #3d1a00}
+    .char-name-badge.idefix{background:#2d5016;border-color:#0d2006;box-shadow:1px 1px 0 #0d2006}
+
+    /* ── BULLES BD ── */
+    .speech-bubble{position:relative;background:white;border:3px solid #1a1a1a;border-radius:20px;padding:16px 20px;max-width:500px;margin:20px auto;box-shadow:3px 3px 0 #1a1a1a;font-size:16px;line-height:1.5;color:#1a1a1a}
+    .speech-bubble::after{content:'';position:absolute;bottom:-20px;left:50%;transform:translateX(-50%);border:10px solid transparent;border-top-color:#1a1a1a}
+    .speech-bubble::before{content:'';position:absolute;bottom:-15px;left:50%;transform:translateX(-50%);border:8px solid transparent;border-top-color:white;z-index:1}
+    .speech-bubble.thought{border-radius:30px;border-style:dashed;border-width:3px}
+    .speech-bubble.thought::after{bottom:-28px;border:none;width:12px;height:12px;background:#1a1a1a;border-radius:50%;left:calc(50% - 6px)}
+    .speech-bubble.thought::before{bottom:-18px;border:none;width:8px;height:8px;background:white;border-radius:50%;left:calc(50% - 4px);z-index:1}
+    .speech-bubble.left-tail::after{left:24px;transform:none}
+    .speech-bubble.left-tail::before{left:28px;transform:none}
+    .speech-bubble.right-tail::after{left:auto;right:24px;transform:none}
+    .speech-bubble.right-tail::before{left:auto;right:28px;transform:none}
+
+    /* ── HERO ── */
+    .hero{position:relative;background:linear-gradient(180deg,#5ba3d9 0%,#7ec8e3 35%,#a8e6a3 70%,#6aa832 100%);overflow:hidden;padding-bottom:20px}
+    .cloud{position:absolute;background:white;border-radius:50px;opacity:.9}
+    .cloud::before,.cloud::after{content:'';position:absolute;background:white;border-radius:50%}
+    .cloud1{width:120px;height:40px;top:8%;left:5%;animation:floatCloud 18s linear infinite}
+    .cloud1::before{width:60px;height:55px;top:-28px;left:15px}
+    .cloud1::after{width:40px;height:40px;top:-18px;left:55px}
+    .cloud2{width:90px;height:30px;top:15%;right:8%;animation:floatCloud 22s linear infinite reverse}
+    .cloud2::before{width:45px;height:42px;top:-22px;left:10px}
+    .cloud2::after{width:30px;height:30px;top:-12px;left:45px}
+    .cloud3{width:70px;height:25px;top:22%;left:30%;animation:floatCloud 15s linear infinite}
+    .cloud3::before{width:35px;height:32px;top:-17px;left:8px}
+    .cloud3::after{width:25px;height:25px;top:-10px;left:35px}
+    @keyframes floatCloud{0%{transform:translateX(-60px)}100%{transform:translateX(120px)}}
+    .title-banner{position:relative;z-index:10;text-align:center;padding:30px 20px 10px}
+    .onomatopee{font-family:'Bangers',cursive;font-size:28px;color:#ff3a00;text-shadow:2px 2px 0 #800000,-1px -1px 0 #ff9900;transform:rotate(-8deg);display:inline-block;margin:0 10px;animation:wobble 3s ease-in-out infinite}
+    .onomatopee:nth-child(2){transform:rotate(5deg);animation-delay:1s;color:#8b0fff;text-shadow:2px 2px 0 #4a008a,-1px -1px 0 #cc44ff}
+    .onomatopee:nth-child(3){transform:rotate(-4deg);animation-delay:.5s;color:#ff6600;text-shadow:2px 2px 0 #993d00}
+    @keyframes wobble{0%,100%{transform:rotate(-8deg) scale(1)}50%{transform:rotate(-8deg) scale(1.08)}}
+    .main-title{font-family:'Bangers',cursive;font-size:clamp(36px,9vw,72px);color:#ffe800;text-shadow:4px 4px 0 #cc0000,6px 6px 0 rgba(0,0,0,.4);letter-spacing:3px;line-height:1.1;margin:10px 0}
+    .main-subtitle{font-family:'Bangers',cursive;font-size:clamp(18px,4vw,32px);color:#fff;text-shadow:2px 2px 0 #cc0000;letter-spacing:2px}
+    .scroll-hint{text-align:center;font-family:'Bangers',cursive;font-size:13px;color:rgba(255,255,255,.7);letter-spacing:1px;margin:8px 0}
+    .info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;max-width:700px;margin:0 auto;padding:20px}
+    .info-card{background:white;border:3px solid #1a1a1a;border-radius:12px;padding:14px 16px;box-shadow:3px 3px 0 #1a1a1a;text-align:center}
+    .info-card .icon{font-size:28px;display:block;margin-bottom:6px}
+    .info-card .label{font-family:'Bangers',cursive;font-size:16px;color:#8b0000;letter-spacing:1px}
+    .info-card .value{font-family:'Patrick Hand',cursive;font-size:14px;color:#333;margin-top:4px;font-weight:bold}
+
+    /* ── PARCHEMIN ── */
+    .parchment{background:linear-gradient(135deg,#f5e6c8 0%,#eedcb0 40%,#f0e4c0 80%,#e8d4a0 100%);border:3px solid #8b6914;border-radius:8px;padding:20px 24px;position:relative;box-shadow:4px 4px 8px rgba(0,0,0,.3);max-width:560px;margin:0 auto}
+    .parchment::before{content:'';position:absolute;top:4px;left:4px;right:4px;bottom:4px;border:1px dashed rgba(139,105,20,.4);border-radius:6px;pointer-events:none}
+    .parchment-title{font-family:'Bangers',cursive;font-size:22px;color:#5c3a0a;text-align:center;margin-bottom:12px;letter-spacing:2px}
+    .parchment-placeholder{color:#7a5c1a;font-size:15px;line-height:1.7;font-style:italic;text-align:center;padding:12px;border:2px dashed #c4a44a;border-radius:6px;background:rgba(255,255,255,.3)}
+    .parchment-placeholder strong{display:block;font-family:'Fredoka One',cursive;font-size:17px;color:#8b4513;margin-bottom:6px;font-style:normal}
+    .divider{text-align:center;font-size:20px;margin:16px 0;color:#c4843b}
+    .section-title{font-family:'Bangers',cursive;font-size:clamp(28px,6vw,48px);color:#5c1a00;text-align:center;text-shadow:3px 3px 0 #ff9900,4px 4px 0 rgba(0,0,0,.2);letter-spacing:2px;margin:10px 0 20px}
+
+    /* ── VIDÉO LOCALE ── */
+    .video-section{max-width:620px;margin:24px auto;padding:0 16px}
+    .video-label{font-family:'Bangers',cursive;font-size:16px;color:#5c3a0a;text-align:center;margin-bottom:8px;letter-spacing:1px}
+    .video-container{background:#1a1a1a;border:4px solid #1a1a1a;border-radius:12px;box-shadow:4px 4px 0 #1a1a1a;overflow:hidden;position:relative;aspect-ratio:16/9}
+    .video-container video{width:100%;height:100%;display:block;background:#000}
+    .video-drop-zone{width:100%;height:100%;background:linear-gradient(135deg,#1a0a00 0%,#3d1a00 50%,#1a0a00 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;cursor:pointer;transition:background .2s;border:none;padding:0}
+    .video-drop-zone:hover,.video-drop-zone.dragover{background:linear-gradient(135deg,#2d1200 0%,#5c2800 50%,#2d1200 100%)}
+    .video-drop-zone .play-icon{width:64px;height:64px;border-radius:50%;background:#cc2200;border:4px solid #ffe800;display:flex;align-items:center;justify-content:center}
+    .video-drop-zone p{font-family:'Bangers',cursive;font-size:18px;color:#ffe800;letter-spacing:2px;text-align:center;padding:0 12px}
+    .video-drop-zone small{font-family:'Patrick Hand',cursive;font-size:12px;color:#c4843b;text-align:center}
+
+    /* ── PROGRAMME ── */
+    .programme-bg{background:linear-gradient(180deg,#d4e8a0 0%,#b8d880 100%);min-height:90vh;padding:20px 20px 40px}
+    .days-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;max-width:700px;margin:0 auto 24px}
+    .day-card{background:white;border:3px solid #1a1a1a;border-radius:14px;box-shadow:4px 4px 0 #1a1a1a;overflow:hidden}
+    .day-header{padding:12px 16px 10px;display:flex;align-items:center;gap:10px}
+    .day-header .day-icon{font-size:28px;flex-shrink:0}
+    .day-header .day-name{font-family:'Bangers',cursive;font-size:20px;letter-spacing:1px;line-height:1.1}
+    .day-header .day-date{font-family:'Patrick Hand',cursive;font-size:12px;color:#666}
+    .day-body{padding:0 14px 14px}
+    .event-row{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-top:1px dashed #ddd}
+    .event-row:first-child{border-top:none}
+    .ev-icon{font-size:18px;flex-shrink:0;margin-top:2px}
+    .ev-time{font-family:'Bangers',cursive;font-size:14px;color:#8b1a00;min-width:52px;flex-shrink:0;padding-top:1px}
+    .ev-text{flex:1}
+    .ev-text strong{display:block;font-family:'Fredoka One',cursive;font-size:14px;color:#1a1a1a}
+    .ev-text span{font-size:12px;color:#555;line-height:1.4;display:block}
+    .day-jeudi .day-header{background:#fff3cd}.day-jeudi .day-header .day-name{color:#7a4800}
+    .day-vendredi .day-header{background:#d4edda}.day-vendredi .day-header .day-name{color:#1a5c2e}
+    .day-samedi .day-header{background:#f8d7da}.day-samedi .day-header .day-name{color:#7a0c18}
+    .day-dimanche .day-header{background:#cce5ff}.day-dimanche .day-header .day-name{color:#004085}
+    .day-lundi .day-header{background:#e8ccff}.day-lundi .day-header .day-name{color:#760085}
+    .quete-badge{display:inline-block;background:#cc2200;color:#ffe800;font-family:'Bangers',cursive;font-size:12px;padding:2px 10px;border-radius:20px;letter-spacing:1px;margin-top:3px;border:2px solid #4d0000}
+    .fete-badge{display:inline-block;background:#7a0c18;color:#ffe800;font-family:'Bangers',cursive;font-size:12px;padding:2px 10px;border-radius:20px;letter-spacing:1px;margin-top:3px;border:2px solid #3d0a00}
+
+    /* ── INFOS PRATIQUES ── */
+    .infos-bg{background:linear-gradient(180deg,#f5e6c8 0%,#e8d4a0 100%);min-height:90vh;padding:20px 20px 40px}
+    .info-section{max-width:680px;margin:0 auto 24px}
+    .info-section-title{font-family:'Bangers',cursive;font-size:22px;color:#5c1a00;letter-spacing:1px;margin-bottom:12px;padding-left:6px;border-left:5px solid #c4843b}
+    .map-placeholder{background:#e0f0e0;border:3px solid #1a1a1a;border-radius:10px;padding:30px;text-align:center;box-shadow:3px 3px 0 #1a1a1a;font-family:'Bangers',cursive;font-size:18px;color:#2d5016;letter-spacing:1px}
+    .map-placeholder small{display:block;font-family:'Patrick Hand',cursive;font-size:13px;color:#555;margin-top:6px;font-weight:normal;letter-spacing:0}
+    .practical-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;max-width:680px;margin:0 auto}
+    .practical-card{background:white;border:3px solid #1a1a1a;border-radius:10px;padding:14px;box-shadow:3px 3px 0 #1a1a1a;text-align:center}
+    .practical-card .picon{font-size:30px;display:block;margin-bottom:6px}
+    .practical-card .ptitle{font-family:'Bangers',cursive;font-size:16px;color:#8b1a00;letter-spacing:1px;margin-bottom:6px}
+    .practical-card .ptext{font-size:13px;color:#333;line-height:1.5}
+    .adress-bubble{background:#fffde0;border:3px solid #1a1a1a;border-radius:16px;padding:16px 20px;max-width:400px;margin:0 auto 20px;box-shadow:3px 3px 0 #1a1a1a;text-align:center;font-size:15px;color:#1a1a1a;line-height:1.6}
+    .adress-bubble strong{font-family:'Bangers',cursive;font-size:18px;color:#8b0000;display:block;margin-bottom:6px;letter-spacing:1px}
+
+    /* ── FORMULAIRE ── */
+    .confirm-bg{background:linear-gradient(180deg,#ffe8d0 0%,#ffd4a0 100%);min-height:90vh;padding:20px 20px 40px}
+    .form-parchment{max-width:560px;margin:0 auto;background:linear-gradient(135deg,#f5e6c8 0%,#eedcb0 100%);border:3px solid #8b6914;border-radius:12px;padding:24px;box-shadow:4px 4px 8px rgba(0,0,0,.25)}
+    .form-field{margin-bottom:16px}
+    .form-field label{display:block;font-family:'Bangers',cursive;font-size:16px;color:#5c3a0a;letter-spacing:1px;margin-bottom:5px}
+    .form-field input,.form-field select,.form-field textarea{width:100%;padding:8px 12px;border:2px solid #8b6914;border-radius:8px;background:rgba(255,255,255,.8);font-family:'Patrick Hand',cursive;font-size:14px;color:#3d2a00;outline:none}
+    .form-field input:focus,.form-field select:focus,.form-field textarea:focus{border-color:#c4843b;background:white}
+    .form-field textarea{min-height:70px;resize:vertical}
+    .covoiturage-box{background:rgba(255,255,255,.5);border:2px solid #8b6914;border-radius:10px;padding:14px;margin-bottom:16px}
+    .covoiturage-box .covo-title{font-family:'Bangers',cursive;font-size:17px;color:#5c3a0a;letter-spacing:1px;margin-bottom:10px}
+    .radio-group{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+    .radio-label{display:flex;align-items:center;gap:6px;font-size:14px;color:#3d2a00;cursor:pointer;background:rgba(255,255,255,.6);border:2px solid #c4843b;border-radius:8px;padding:6px 12px;transition:background .15s}
+    .radio-label:hover{background:rgba(255,255,255,.9)}
+    .radio-label input{accent-color:#8b4513}
+    .covo-extra{display:none;margin-top:10px}.covo-extra.show{display:block}
+    .btn-submit{display:block;width:100%;padding:12px;background:linear-gradient(135deg,#cc2200 0%,#880000 100%);color:#ffe800;border:3px solid #4d0000;border-radius:10px;font-family:'Bangers',cursive;font-size:22px;letter-spacing:2px;cursor:pointer;box-shadow:3px 3px 0 #4d0000;text-shadow:1px 1px 0 #4d0000;transition:transform .1s,box-shadow .1s;margin-top:8px}
+    .btn-submit:hover{transform:translateY(-2px);box-shadow:3px 5px 0 #4d0000}
+    .btn-submit:active{transform:translateY(1px);box-shadow:2px 2px 0 #4d0000}
+    .success-bubble{display:none;background:white;border:3px solid #1a1a1a;border-radius:20px;padding:20px;text-align:center;box-shadow:3px 3px 0 #1a1a1a;max-width:400px;margin:20px auto}
+    .success-bubble.show{display:block}
+    .success-bubble .big-icon{font-size:48px;display:block}
+    .success-bubble p{font-family:'Fredoka One',cursive;font-size:18px;color:#2d5016;margin-top:8px}
+
+    /* ── PHOTOS ── */
+    .photos-bg{background:linear-gradient(180deg,#e0d0ff 0%,#c8b8f0 100%);min-height:90vh;padding:20px 20px 40px}
+    .photo-upload-zone{background:white;border:4px dashed #8b4fc4;border-radius:16px;padding:40px 20px;text-align:center;max-width:500px;margin:0 auto 24px;cursor:pointer;transition:background .2s}
+    .photo-upload-zone:hover{background:#f5f0ff}
+    .photo-upload-zone .upload-icon{font-size:48px;display:block;margin-bottom:10px}
+    .photo-upload-zone p{font-family:'Bangers',cursive;font-size:18px;color:#5c1a8b;letter-spacing:1px}
+    .photo-upload-zone small{font-size:12px;color:#888;font-family:'Patrick Hand',cursive}
+    .photo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;max-width:680px;margin:0 auto}
+    .photo-frame{background:white;border:3px solid #1a1a1a;border-radius:4px;padding:6px 6px 28px;box-shadow:3px 3px 0 #1a1a1a;transform:rotate(-1deg);transition:transform .2s}
+    .photo-frame:nth-child(even){transform:rotate(1.5deg)}
+    .photo-frame:hover{transform:rotate(0) scale(1.05);z-index:10;position:relative}
+    .photo-frame .photo-inner{background:#e0e0e0;width:100%;padding-top:75%;border-radius:2px;position:relative;overflow:hidden}
+    .photo-frame .photo-inner img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover}
+    .photo-frame .photo-inner .no-photo{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:28px}
+    .photo-caption{font-family:'Patrick Hand',cursive;font-size:11px;color:#555;text-align:center;margin-top:6px}
+    .badge{display:inline-block;background:#8b4fc4;color:white;font-family:'Bangers',cursive;font-size:13px;padding:4px 12px;border-radius:20px;letter-spacing:1px;margin:4px}
+
+    /* ── FOOTER ── */
+    .village-footer{background:#5c3a1e;border-top:4px solid #3d2209;padding:12px 20px;text-align:center}
+    .village-footer p{font-family:'Bangers',cursive;font-size:13px;color:#c4843b;letter-spacing:1px}
+
+    @media(max-width:600px){
+      .nav-inner{height:80px;gap:0}
+      .nav-item{max-width:72px}
+      .nav-item svg{transform:scale(.78);transform-origin:bottom center}
+      .hut-label{font-size:9px}
+      .main-title{font-size:32px}
+      .days-grid{grid-template-columns:1fr}
+      .char-zone{gap:8px}
+      .onomatopee{font-size:20px;margin:0 5px}
+      .nav-countdown{min-width:110px}
+      .countdown-numbers{font-size:13px}
+    }
+  </style>
+</head>
+<body>
+
+<div class="sky">
+
+  <!-- ══════════════════════════════ NAVIGATION VILLAGE ══════════════════════════════ -->
+  <nav class="nav">
+    <div class="nav-ground"></div>
+    <div class="nav-inner">
+
+      <!-- HUT 1 : Le Village (accueil) -->
+      <button class="nav-item active" onclick="showPage('accueil',this)" title="Le Village">
+        <span class="hut-flag">🚩</span>
+        <div class="hut-smoke">
+          <div class="smoke-ring"></div>
+          <div class="smoke-ring"></div>
+          <div class="smoke-ring"></div>
+        </div>
+        <div class="hut-body">
+          <svg width="80" height="72" viewBox="0 0 80 72" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <clipPath id="wall1"><rect x="16" y="40" width="48" height="22" rx="6"/></clipPath>
+            </defs>
+            <ellipse cx="40" cy="66" rx="28" ry="7" fill="#3a3a3a" opacity=".2"/>
+            <!-- Murs en pierre : fond -->
+            <rect x="16" y="40" width="48" height="22" rx="6" fill="#b0a090"/>
+            <ellipse cx="40" cy="60" rx="24" ry="11" fill="#b0a090"/>
+            <!-- Pierres irrégulières rangée du bas -->
+            <rect x="17" y="53" width="11" height="8" rx="1.5" fill="#c8b89a" stroke="#7a6a58" stroke-width="1" clip-path="url(#wall1)"/>
+            <rect x="30" y="54" width="9" height="7" rx="1.5" fill="#b8a888" stroke="#7a6a58" stroke-width="1" clip-path="url(#wall1)"/>
+            <rect x="41" y="53" width="12" height="8" rx="1.5" fill="#c0b090" stroke="#7a6a58" stroke-width="1" clip-path="url(#wall1)"/>
+            <rect x="55" y="54" width="8" height="7" rx="1.5" fill="#c8b89a" stroke="#7a6a58" stroke-width="1" clip-path="url(#wall1)"/>
+            <!-- Pierres rangée du haut -->
+            <rect x="17" y="41" width="8" height="10" rx="1.5" fill="#d0c0a0" stroke="#7a6a58" stroke-width="1" clip-path="url(#wall1)"/>
+            <rect x="27" y="41" width="13" height="10" rx="1.5" fill="#bfaf90" stroke="#7a6a58" stroke-width="1" clip-path="url(#wall1)"/>
+            <rect x="42" y="41" width="10" height="10" rx="1.5" fill="#ccc0a0" stroke="#7a6a58" stroke-width="1" clip-path="url(#wall1)"/>
+            <rect x="54" y="41" width="10" height="10" rx="1.5" fill="#d0c0a8" stroke="#7a6a58" stroke-width="1" clip-path="url(#wall1)"/>
+            <!-- Toit de chaume conique -->
+            <polygon points="40,4 8,42 72,42" fill="#8b6914"/>
+            <polygon points="40,4 10,40 70,40" fill="#a07820"/>
+            <line x1="40" y1="4" x2="14" y2="38" stroke="#6b4d10" stroke-width="1" opacity=".6"/>
+            <line x1="40" y1="4" x2="22" y2="38" stroke="#6b4d10" stroke-width="1" opacity=".6"/>
+            <line x1="40" y1="4" x2="30" y2="39" stroke="#6b4d10" stroke-width="1" opacity=".6"/>
+            <line x1="40" y1="4" x2="50" y2="39" stroke="#6b4d10" stroke-width="1" opacity=".6"/>
+            <line x1="40" y1="4" x2="58" y2="38" stroke="#6b4d10" stroke-width="1" opacity=".6"/>
+            <line x1="40" y1="4" x2="66" y2="38" stroke="#6b4d10" stroke-width="1" opacity=".6"/>
+            <polygon points="40,4 8,42 72,42" fill="none" stroke="#5c3a1e" stroke-width="2.5"/>
+            <line x1="40" y1="4" x2="40" y2="1" stroke="#5c3a1e" stroke-width="2"/>
+            <circle cx="40" cy="1" r="3" fill="#cc2200" stroke="#5c3a1e" stroke-width="1"/>
+            <!-- Porte arrondie -->
+            <path d="M33,62 L33,50 Q40,44 47,50 L47,62 Z" fill="#5c1a00" stroke="#3d1200" stroke-width="1.5"/>
+            <!-- Fenêtre -->
+            <circle cx="27" cy="50" r="5" fill="#ffe8a0" stroke="#5c3a1e" stroke-width="1.5"/>
+            <line x1="27" y1="45" x2="27" y2="55" stroke="#5c3a1e" stroke-width="1"/>
+            <line x1="22" y1="50" x2="32" y2="50" stroke="#5c3a1e" stroke-width="1"/>
+            <!-- Bordure murs -->
+            <rect x="16" y="40" width="48" height="22" rx="6" fill="none" stroke="#5c3a1e" stroke-width="2"/>
+          </svg>
+        </div>
+        <div class="hut-label">🏡 Le Village</div>
+      </button>
+
+      <!-- HUT 2 : Le Programme -->
+      <button class="nav-item" onclick="showPage('programme',this)" title="Le Programme">
+        <span class="hut-flag">🚩</span>
+        <div class="hut-body">
+          <svg width="80" height="72" viewBox="0 0 80 72" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <clipPath id="wall2"><rect x="17" y="41" width="46" height="20" rx="6"/></clipPath>
+            </defs>
+            <ellipse cx="40" cy="66" rx="27" ry="6" fill="#3a3a3a" opacity=".2"/>
+            <!-- Murs en pierre -->
+            <rect x="17" y="41" width="46" height="20" rx="6" fill="#b0a090"/>
+            <ellipse cx="40" cy="60" rx="23" ry="10" fill="#b0a090"/>
+            <!-- Pierres rangée bas -->
+            <rect x="18" y="53" width="10" height="7" rx="1.5" fill="#c8b89a" stroke="#7a6a58" stroke-width="1" clip-path="url(#wall2)"/>
+            <rect x="30" y="54" width="12" height="6" rx="1.5" fill="#bfaf90" stroke="#7a6a58" stroke-width="1" clip-path="url(#wall2)"/>
+            <rect x="44" y="53" width="9" height="7" rx="1.5" fill="#ccc0a0" stroke="#7a6a58" stroke-width="1" clip-path="url(#wall2)"/>
+            <rect x="55" y="54" width="7" height="6" rx="1.5" fill="#c8b89a" stroke="#7a6a58" stroke-width="1" clip-path="url(#wall2)"/>
+            <!-- Pierres rangée haut -->
+            <rect x="18" y="42" width="12" height="9" rx="1.5" fill="#d0c0a0" stroke="#7a6a58" stroke-width="1" clip-path="url(#wall2)"/>
+            <rect x="32" y="42" width="9" height="9" rx="1.5" fill="#c0b090" stroke="#7a6a58" stroke-width="1" clip-path="url(#wall2)"/>
+            <rect x="43" y="42" width="11" height="9" rx="1.5" fill="#ccc0a0" stroke="#7a6a58" stroke-width="1" clip-path="url(#wall2)"/>
+            <rect x="56" y="42" width="7" height="9" rx="1.5" fill="#d0c0a8" stroke="#7a6a58" stroke-width="1" clip-path="url(#wall2)"/>
+            <!-- Toit de chaume -->
+            <polygon points="40,5 9,43 71,43" fill="#8b6914"/>
+            <polygon points="40,5 11,41 69,41" fill="#a07820"/>
+            <line x1="40" y1="5" x2="15" y2="39" stroke="#6b4d10" stroke-width="1" opacity=".6"/>
+            <line x1="40" y1="5" x2="23" y2="40" stroke="#6b4d10" stroke-width="1" opacity=".6"/>
+            <line x1="40" y1="5" x2="31" y2="41" stroke="#6b4d10" stroke-width="1" opacity=".6"/>
+            <line x1="40" y1="5" x2="49" y2="41" stroke="#6b4d10" stroke-width="1" opacity=".6"/>
+            <line x1="40" y1="5" x2="57" y2="40" stroke="#6b4d10" stroke-width="1" opacity=".6"/>
+            <line x1="40" y1="5" x2="65" y2="39" stroke="#6b4d10" stroke-width="1" opacity=".6"/>
+            <polygon points="40,5 9,43 71,43" fill="none" stroke="#5c3a1e" stroke-width="2.5"/>
+            <line x1="40" y1="5" x2="40" y2="2" stroke="#5c3a1e" stroke-width="2"/>
+            <circle cx="40" cy="2" r="3" fill="#cc2200" stroke="#5c3a1e" stroke-width="1"/>
+            <!-- Porte arrondie -->
+            <path d="M34,61 L34,51 Q40,45 46,51 L46,61 Z" fill="#5c1a00" stroke="#3d1200" stroke-width="1.5"/>
+            <!-- Fenêtre -->
+            <rect x="20" y="47" width="9" height="8" rx="2" fill="#ffe8a0" stroke="#5c3a1e" stroke-width="1.5"/>
+            <line x1="24.5" y1="47" x2="24.5" y2="55" stroke="#5c3a1e" stroke-width="1"/>
+            <line x1="20" y1="51" x2="29" y2="51" stroke="#5c3a1e" stroke-width="1"/>
+            <!-- Bordure murs -->
+            <rect x="17" y="41" width="46" height="20" rx="6" fill="none" stroke="#5c3a1e" stroke-width="2"/>
+          </svg>
+        </div>
+        <div class="hut-label">📜 Programme</div>
+      </button>
+
+      <!-- HUT 3 : Infos Pratiques (grande hutte centrale avec tour) -->
+      <button class="nav-item" onclick="showPage('infos',this)" title="Infos Pratiques">
+        <span class="hut-flag">🚩</span>
+        <div class="hut-smoke">
+          <div class="smoke-ring"></div>
+          <div class="smoke-ring"></div>
+          <div class="smoke-ring"></div>
+        </div>
+        <div class="hut-body">
+          <svg width="88" height="72" viewBox="0 0 88 72" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <clipPath id="wall3"><rect x="18" y="38" width="52" height="24" rx="7"/></clipPath>
+            </defs>
+            <ellipse cx="44" cy="67" rx="30" ry="7" fill="#3a3a3a" opacity=".2"/>
+            <!-- Murs en pierre -->
+            <rect x="18" y="38" width="52" height="24" rx="7" fill="#b0a090"/>
+            <ellipse cx="44" cy="61" rx="26" ry="10" fill="#b0a090"/>
+            <!-- Pierres rangée bas -->
+            <rect x="19" y="52" width="11" height="9" rx="1.5" fill="#c8b89a" stroke="#7a6a58" stroke-width="1" clip-path="url(#wall3)"/>
+            <rect x="32" y="53" width="13" height="8" rx="1.5" fill="#bfaf90" stroke="#7a6a58" stroke-width="1" clip-path="url(#wall3)"/>
+            <rect x="47" y="52" width="12" height="9" rx="1.5" fill="#ccc0a0" stroke="#7a6a58" stroke-width="1" clip-path="url(#wall3)"/>
+            <rect x="61" y="53" width="8" height="8" rx="1.5" fill="#c8b89a" stroke="#7a6a58" stroke-width="1" clip-path="url(#wall3)"/>
+            <!-- Pierres rangée haut -->
+            <rect x="19" y="39" width="13" height="11" rx="1.5" fill="#d0c0a0" stroke="#7a6a58" stroke-width="1" clip-path="url(#wall3)"/>
+            <rect x="34" y="39" width="10" height="11" rx="1.5" fill="#c0b090" stroke="#7a6a58" stroke-width="1" clip-path="url(#wall3)"/>
+            <rect x="46" y="39" width="13" height="11" rx="1.5" fill="#ccc0a0" stroke="#7a6a58" stroke-width="1" clip-path="url(#wall3)"/>
+            <rect x="61" y="39" width="8" height="11" rx="1.5" fill="#d0c0a8" stroke="#7a6a58" stroke-width="1" clip-path="url(#wall3)"/>
+            <!-- Grand toit -->
+            <polygon points="44,2 14,40 74,40" fill="#9b7018"/>
+            <polygon points="44,2 16,38 72,38" fill="#b88428"/>
+            <line x1="44" y1="2" x2="18" y2="36" stroke="#6b4d10" stroke-width="1.2" opacity=".55"/>
+            <line x1="44" y1="2" x2="28" y2="38" stroke="#6b4d10" stroke-width="1.2" opacity=".55"/>
+            <line x1="44" y1="2" x2="36" y2="39" stroke="#6b4d10" stroke-width="1.2" opacity=".55"/>
+            <line x1="44" y1="2" x2="52" y2="39" stroke="#6b4d10" stroke-width="1.2" opacity=".55"/>
+            <line x1="44" y1="2" x2="60" y2="38" stroke="#6b4d10" stroke-width="1.2" opacity=".55"/>
+            <line x1="44" y1="2" x2="70" y2="36" stroke="#6b4d10" stroke-width="1.2" opacity=".55"/>
+            <polygon points="44,2 14,40 74,40" fill="none" stroke="#5c3a1e" stroke-width="2.5"/>
+            <line x1="44" y1="1" x2="44" y2="-3" stroke="#5c3a1e" stroke-width="2"/>
+            <polygon points="44,-3 52,-1 44,1" fill="#cc2200" stroke="#5c3a1e" stroke-width="1"/>
+            <!-- Porte -->
+            <path d="M37,62 L37,50 Q44,44 51,50 L51,62 Z" fill="#5c1a00" stroke="#3d1200" stroke-width="1.5"/>
+            <!-- 2 fenêtres -->
+            <rect x="20" y="46" width="9" height="8" rx="2" fill="#ffe8a0" stroke="#5c3a1e" stroke-width="1.5"/>
+            <line x1="24.5" y1="46" x2="24.5" y2="54" stroke="#5c3a1e" stroke-width="1"/>
+            <rect x="59" y="46" width="9" height="8" rx="2" fill="#ffe8a0" stroke="#5c3a1e" stroke-width="1.5"/>
+            <line x1="63.5" y1="46" x2="63.5" y2="54" stroke="#5c3a1e" stroke-width="1"/>
+            <!-- Bordure murs -->
+            <rect x="18" y="38" width="52" height="24" rx="7" fill="none" stroke="#5c3a1e" stroke-width="2"/>
+          </svg>
+        </div>
+        <div class="hut-label">🗺️ Infos</div>
+      </button>
+
+      <!-- HUT 4 : Je Confirme -->
+      <button class="nav-item" onclick="showPage('confirmer',this)" title="Je Confirme !">
+        <span class="hut-flag">🚩</span>
+        <div class="hut-body">
+          <svg width="80" height="72" viewBox="0 0 80 72" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <clipPath id="wall4"><rect x="17" y="41" width="46" height="20" rx="6"/></clipPath>
+            </defs>
+            <ellipse cx="40" cy="66" rx="27" ry="6" fill="#3a3a3a" opacity=".2"/>
+            <!-- Murs en pierre -->
+            <rect x="17" y="41" width="46" height="20" rx="6" fill="#b0a090"/>
+            <ellipse cx="40" cy="60" rx="23" ry="10" fill="#b0a090"/>
+            <!-- Pierres rangée bas -->
+            <rect x="18" y="53" width="9" height="7" rx="1.5" fill="#c8b89a" stroke="#7a6a58" stroke-width="1" clip-path="url(#wall4)"/>
+            <rect x="29" y="54" width="11" height="6" rx="1.5" fill="#bfaf90" stroke="#7a6a58" stroke-width="1" clip-path="url(#wall4)"/>
+            <rect x="42" y="53" width="10" height="7" rx="1.5" fill="#ccc0a0" stroke="#7a6a58" stroke-width="1" clip-path="url(#wall4)"/>
+            <rect x="54" y="54" width="8" height="6" rx="1.5" fill="#c8b89a" stroke="#7a6a58" stroke-width="1" clip-path="url(#wall4)"/>
+            <!-- Pierres rangée haut -->
+            <rect x="18" y="42" width="11" height="9" rx="1.5" fill="#d0c0a0" stroke="#7a6a58" stroke-width="1" clip-path="url(#wall4)"/>
+            <rect x="31" y="42" width="9" height="9" rx="1.5" fill="#c0b090" stroke="#7a6a58" stroke-width="1" clip-path="url(#wall4)"/>
+            <rect x="42" y="42" width="12" height="9" rx="1.5" fill="#ccc0a0" stroke="#7a6a58" stroke-width="1" clip-path="url(#wall4)"/>
+            <rect x="56" y="42" width="7" height="9" rx="1.5" fill="#d0c0a8" stroke="#7a6a58" stroke-width="1" clip-path="url(#wall4)"/>
+            <!-- Toit de chaume -->
+            <polygon points="40,5 9,43 71,43" fill="#8b6914"/>
+            <polygon points="40,5 11,41 69,41" fill="#a07820"/>
+            <line x1="40" y1="5" x2="15" y2="39" stroke="#6b4d10" stroke-width="1" opacity=".6"/>
+            <line x1="40" y1="5" x2="23" y2="40" stroke="#6b4d10" stroke-width="1" opacity=".6"/>
+            <line x1="40" y1="5" x2="31" y2="41" stroke="#6b4d10" stroke-width="1" opacity=".6"/>
+            <line x1="40" y1="5" x2="49" y2="41" stroke="#6b4d10" stroke-width="1" opacity=".6"/>
+            <line x1="40" y1="5" x2="57" y2="40" stroke="#6b4d10" stroke-width="1" opacity=".6"/>
+            <line x1="40" y1="5" x2="65" y2="39" stroke="#6b4d10" stroke-width="1" opacity=".6"/>
+            <polygon points="40,5 9,43 71,43" fill="none" stroke="#5c3a1e" stroke-width="2.5"/>
+            <line x1="40" y1="5" x2="40" y2="2" stroke="#5c3a1e" stroke-width="2"/>
+            <circle cx="40" cy="2" r="3" fill="#cc2200" stroke="#5c3a1e" stroke-width="1"/>
+            <!-- Porte arrondie -->
+            <path d="M34,61 L34,51 Q40,45 46,51 L46,61 Z" fill="#5c1a00" stroke="#3d1200" stroke-width="1.5"/>
+            <!-- 2 fenêtres -->
+            <rect x="20" y="47" width="9" height="8" rx="2" fill="#ffe8a0" stroke="#5c3a1e" stroke-width="1.5"/>
+            <line x1="24.5" y1="47" x2="24.5" y2="55" stroke="#5c3a1e" stroke-width="1"/>
+            <line x1="20" y1="51" x2="29" y2="51" stroke="#5c3a1e" stroke-width="1"/>
+            <rect x="51" y="47" width="9" height="8" rx="2" fill="#ffe8a0" stroke="#5c3a1e" stroke-width="1.5"/>
+            <line x1="55.5" y1="47" x2="55.5" y2="55" stroke="#5c3a1e" stroke-width="1"/>
+            <line x1="51" y1="51" x2="60" y2="51" stroke="#5c3a1e" stroke-width="1"/>
+            <!-- Bordure murs -->
+            <rect x="17" y="41" width="46" height="20" rx="6" fill="none" stroke="#5c3a1e" stroke-width="2"/>
+          </svg>
+        </div>
+        <div class="hut-label">✅ Je Confirme !</div>
+      </button>
+
+      <!-- HUT 5 : Photos & Souvenirs -->
+      <button class="nav-item" onclick="showPage('photos',this)" title="Photos & Souvenirs">
+        <span class="hut-flag">🚩</span>
+        <div class="hut-smoke">
+          <div class="smoke-ring"></div>
+          <div class="smoke-ring"></div>
+          <div class="smoke-ring"></div>
+        </div>
+        <div class="hut-body">
+          <svg width="80" height="72" viewBox="0 0 80 72" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <clipPath id="wall5"><rect x="17" y="41" width="46" height="20" rx="6"/></clipPath>
+            </defs>
+            <ellipse cx="40" cy="66" rx="27" ry="6" fill="#3a3a3a" opacity=".2"/>
+            <!-- Murs en pierre -->
+            <rect x="17" y="41" width="46" height="20" rx="6" fill="#b0a090"/>
+            <ellipse cx="40" cy="60" rx="23" ry="10" fill="#b0a090"/>
+            <!-- Pierres rangée bas -->
+            <rect x="18" y="53" width="12" height="7" rx="1.5" fill="#c8b89a" stroke="#7a6a58" stroke-width="1" clip-path="url(#wall5)"/>
+            <rect x="32" y="54" width="9" height="6" rx="1.5" fill="#bfaf90" stroke="#7a6a58" stroke-width="1" clip-path="url(#wall5)"/>
+            <rect x="43" y="53" width="11" height="7" rx="1.5" fill="#ccc0a0" stroke="#7a6a58" stroke-width="1" clip-path="url(#wall5)"/>
+            <rect x="56" y="54" width="6" height="6" rx="1.5" fill="#c8b89a" stroke="#7a6a58" stroke-width="1" clip-path="url(#wall5)"/>
+            <!-- Pierres rangée haut -->
+            <rect x="18" y="42" width="9" height="9" rx="1.5" fill="#d0c0a0" stroke="#7a6a58" stroke-width="1" clip-path="url(#wall5)"/>
+            <rect x="29" y="42" width="12" height="9" rx="1.5" fill="#c0b090" stroke="#7a6a58" stroke-width="1" clip-path="url(#wall5)"/>
+            <rect x="43" y="42" width="10" height="9" rx="1.5" fill="#ccc0a0" stroke="#7a6a58" stroke-width="1" clip-path="url(#wall5)"/>
+            <rect x="55" y="42" width="8" height="9" rx="1.5" fill="#d0c0a8" stroke="#7a6a58" stroke-width="1" clip-path="url(#wall5)"/>
+            <!-- Toit de chaume -->
+            <polygon points="40,5 9,43 71,43" fill="#8b6914"/>
+            <polygon points="40,5 11,41 69,41" fill="#a07820"/>
+            <line x1="40" y1="5" x2="15" y2="39" stroke="#6b4d10" stroke-width="1" opacity=".6"/>
+            <line x1="40" y1="5" x2="23" y2="40" stroke="#6b4d10" stroke-width="1" opacity=".6"/>
+            <line x1="40" y1="5" x2="31" y2="41" stroke="#6b4d10" stroke-width="1" opacity=".6"/>
+            <line x1="40" y1="5" x2="49" y2="41" stroke="#6b4d10" stroke-width="1" opacity=".6"/>
+            <line x1="40" y1="5" x2="57" y2="40" stroke="#6b4d10" stroke-width="1" opacity=".6"/>
+            <line x1="40" y1="5" x2="65" y2="39" stroke="#6b4d10" stroke-width="1" opacity=".6"/>
+            <polygon points="40,5 9,43 71,43" fill="none" stroke="#5c3a1e" stroke-width="2.5"/>
+            <line x1="40" y1="5" x2="40" y2="2" stroke="#5c3a1e" stroke-width="2"/>
+            <circle cx="40" cy="2" r="3" fill="#cc2200" stroke="#5c3a1e" stroke-width="1"/>
+            <!-- Porte arrondie -->
+            <path d="M34,61 L34,51 Q40,45 46,51 L46,61 Z" fill="#5c1a00" stroke="#3d1200" stroke-width="1.5"/>
+            <!-- Fenêtre ronde droite -->
+            <circle cx="55" cy="51" r="5" fill="#ffe8a0" stroke="#5c3a1e" stroke-width="1.5"/>
+            <line x1="55" y1="46" x2="55" y2="56" stroke="#5c3a1e" stroke-width="1"/>
+            <line x1="50" y1="51" x2="60" y2="51" stroke="#5c3a1e" stroke-width="1"/>
+            <!-- Bordure murs -->
+            <rect x="17" y="41" width="46" height="20" rx="6" fill="none" stroke="#5c3a1e" stroke-width="2"/>
+          </svg>
+        </div>
+        <div class="hut-label">📸 Photos</div>
+      </button>
+
+    </div>
+  </nav>
+
+
+  <!-- ══════════════════════════════ PAGE 1 : ACCUEIL ══════════════════════════════ -->
+  <div id="page-accueil" class="page active">
+    <div class="hero">
+      <div class="cloud cloud1"></div>
+      <div class="cloud cloud2"></div>
+      <div class="cloud cloud3"></div>
+
+      <div class="title-banner">
+       
+        <!-- DÉCOMPTE AUTOMATIQUE — cible : samedi 26 juin 2027 à 18h00 (début du festin) -->
+      <div class="nav-countdown" id="nav-countdown">
+        <span class="countdown-label" id="cd-label">⚔️ Festin dans ⚔️</span>
+        <span class="countdown-numbers" id="cd-numbers">…</span>
+      </div>
+
+        <div>
+          <span class="onomatopee">PAR TOUTATIS !</span>
+          <span class="onomatopee">PAF !</span>
+          <span class="onomatopee">GROUINK !</span>
+        </div>
+        <div class="main-title">Axelle a 30 ans !</div>
+        <div class="main-subtitle">🐗 Le grand festin du village vous attend ! 🍗</div>
+        <div class="scroll-hint">✦ 24 • 25 • 26 • 27 • 28 JUIN 2027 ✦</div>
+      </div>
+
+      <!-- PERSONNAGES ACCUEIL -->
+      <div class="char-zone" style="margin-top:10px;margin-bottom:4px">
+        <div class="char-slot">
+          <div class="char-img-frame" style="width:110px;height:160px">
+            <img src="drole.png" id="char-accueil-asterix-preview" style="width:100%;height:100%;object-fit:contain;display:block">
+          </div>
+          
+        </div>
+        <div class="char-slot">
+          <div class="char-img-frame" style="width:90px;height:100px">
+            <img src="idéfix.png" id="char-accueil-idefix-preview" style="width:100%;height:100%;object-fit:contain;display:block">
+          </div>
+          
+        </div>
+        <div class="char-slot">
+          <div class="char-img-frame" style="width:140px;height:180px">
+            <img src="Panoramix.png" id="char-accueil-panoramix-preview" style="width:100%;height:100%;object-fit:contain;display:block">
+          </div>
+          
+        </div>
+      </div>
+
+      <div style="padding:10px 16px 10px">
+
+        <!-- MOT D'AXELLE -->
+<div class="speech-bubble" style="margin-bottom:32px">
+  <div class="parchment-title" style="font-size:17px;margin-bottom:12px">💬 Mot d'Axellix</div>
+  <div style="display:flex;align-items:center;gap:16px">
+    <img src="Dessin Crapaud.png" style="width:110px;height:140px;object-fit:contain;flex-shrink:0">
+    <div class="parchment-placeholder">
+      Ça y est je vais avoir 30 ans !! Viens les fêter avec moi pendant un week-end en immersion dans l'univers d'Astérix et Obélix autour d'une bonne cervoise. 
+    </div>
+  </div>
+</div>
+
+        <!-- ══════════════════════════════════════════════════════
+             VIDÉO LOCALE
+             ══════════════════════════════════════════════════════
+             OPTION A — Vidéo hébergée avec le site (recommandé) :
+               1. Place ton fichier vidéo (ex: fete.mp4) dans le
+                  même dossier que ce fichier HTML.
+               2. Dans le bloc <video> ci-dessous, remplace
+                  src="" par src="fete.mp4"
+               3. Supprime le div id="video-drop-zone" entier.
+
+             OPTION B — Choisir le fichier au moment de visiter :
+               Le bouton "Clique ou glisse ta vidéo" permet de
+               sélectionner un fichier vidéo depuis l'ordinateur.
+               La vidéo s'affiche et se lance immédiatement.
+               ⚠️ Ce choix doit être refait à chaque visite du site.
+
+             Formats supportés : MP4 (recommandé), WebM, MOV
+        ══════════════════════════════════════════════════════ -->
+        <div class="video-section">
+          <div class="video-label">🎬 La Vidéo du Village !</div>
+          <div class="video-container" id="video-wrap">
+  <div class="video-container" id="video-wrap">
+  <iframe src="https://drive.google.com/file/d/10aw0Btuc92YzBEsWK5d_QwIrg9u1281T/preview"
+          style="width:100%;height:100%;border:none"
+          allowfullscreen>
+  </iframe>
+</div>
+</div>
+        </div>
+
+        <div class="divider">⚜️ ─────── ⚜️</div>
+
+        <div class="parchment" style="margin-bottom:20px">
+          <div class="parchment-title">📜 Le mot du chef du village</div>
+          <div class="parchment-placeholder">
+            <strong>🐗 Rendez-vous dans notre village !</strong>
+            Ce site est votre guide pour rejoindre la fête la plus épique depuis que nos ancêtres ont repoussé les Romains ! Consultez le programme, les infos pratiques et confirmez votre présence pour que le festin soit à la hauteur !
+          </div>
+        </div>
+
+        <div class="info-grid" style="padding:16px 0">
+          <div class="info-card"><span class="icon">📅</span><div class="label">Quand ?</div><div class="value"> Du 24 au 28 Juin 2027</div></div>
+          <div class="info-card"><span class="icon">📍</span><div class="label">Où ?</div><div class="value">La Grange<br>Aspremont, Hautes Alpes (05)</div></div>
+          <div class="info-card"><span class="icon">🥂</span><div class="label">Quoi ?</div><div class="value"> Les 30 ans d'Axelle<br>Thème : L'univers d'Astérix et Obélix </div></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════ PAGE 2 : PROGRAMME ══════════════════════════════ -->
+  <div id="page-programme" class="page">
+    <div class="programme-bg">
+      <div class="section-title">📜 Le Programme du Festin</div>
+      <div class="speech-bubble" style="max-width:560px;font-size:14px;margin-bottom:24px">
+        🐗 Quatre jours de festivités dans les Hautes-Alpes ! Entre temps libre, grande quête et festin épique, ce week-end restera gravé dans vos mémoires pour des siècles !
+      </div>
+      <div class="days-grid">
+        <div class="day-card day-jeudi">
+          <div class="day-header"><span class="day-icon"></span><div><div class="day-name">Jeudi 24 Juin</div><div class="day-date">Arrivée au village</div></div></div>
+          <div class="day-body">
+            <div class="event-row"><span class="ev-icon"></span><div class="ev-time">Journée</div><div class="ev-text"><strong>Axelle arrive !</strong><span>Elle prépare le village et accueille les premiers Gaulois</span></div></div>
+            <div class="event-row"><span class="ev-icon"></span><div class="ev-time">Soir</div><div class="ev-text"><strong>Apéritif d'arrivée</strong><span>Premières retrouvailles et Soirée Chill</span></div></div>
+          </div>
+        </div>
+        <div class="day-card day-vendredi">
+          <div class="day-header"><span class="day-icon"></span><div><div class="day-name">Vendredi 25 Juin</div><div class="day-date">Suite des arrivées & Bonheur de la campagne</div></div></div>
+          <div class="day-body">
+            <div class="event-row"><span class="ev-icon"></span><div class="ev-time">Journée</div><div class="ev-text"><strong>Randonnée & Temps libre</strong><span>Balades, détente, jeux… chacun son rythme gaulois !</span></div></div>
+            <div class="event-row"><span class="ev-icon"></span><div class="ev-time">Soir</div><div class="ev-text"><strong>Barbecue & feu de camp sous le ciel étoilé. </strong><span>Bardes à vos harpes !!</span></div></div>
+          </div>
+        </div>
+        <div class="day-card day-samedi">
+          <div class="day-header"><span class="day-icon"></span><div><div class="day-name">Samedi 26 Juin</div><div class="day-date">La grande journée !</div></div></div>
+          <div class="day-body">
+            <div class="event-row"><span class="ev-icon"></span><div class="ev-time">Après-midi</div><div class="ev-text"><strong>La Grande Quête Gauloise</strong><span>Une aventure épique dans les environs !</span> QUÊTE MYSTÈRE</span></div></div>
+            <div class="event-row"><span class="ev-icon"></span><div class="ev-time">Soirée</div><div class="ev-text"><strong>Le Grand Festin des 30 ans !</strong><span>Banquet, gâteau & fête</span>LA GRANDE FÊTE</span></div></div>
+          </div>
+        </div>
+        <div class="day-card day-dimanche">
+          <div class="day-header"><span class="day-icon"></span><div><div class="day-name">Dimanche 27 Juin</div><div class="day-date">Temps libre & départs</div></div></div>
+          <div class="day-body">
+            <div class="event-row"><span class="ev-icon"></span><div class="ev-time">Midi</div><div class="ev-text"><strong>Brunch & Kermess gauloise</strong><span>Préparez vous à rire le ventre plein</span></div></div>
+            <div class="event-row"><span class="ev-icon"></span><div class="ev-time">Soirée</div><div class="ev-text"><strong>Pasta Party</strong><span>Film & Karaoké</span></div></div>
+          </div>
+        </div>
+        <div class="day-card day-lundi">
+          <div class="day-header"><span class="day-icon"></span><div><div class="day-name">Lundi 28 Juin</div><div class="day-date">C'est la fin</div></div></div>
+          <div class="day-body">
+            <div class="event-row"><span class="ev-icon"></span><div class="ev-time">Matin</div><div class="ev-text"><strong>Rangement</strong><span>Derniers instant dans le village</span></div></div>
+            <div class="event-row"><span class="ev-icon"></span><div class="ev-time">Après-midi</div><div class="ev-text"><strong>Départs</strong><span>Retour dans vos villages…</span></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="speech-bubble thought" style="max-width:400px;margin-top:10px;font-size:13px">
+        <strong style="font-family:'Bangers',cursive;color:#2d5016;font-style:normal">Astérix :</strong>
+        Par Bélénos ! La Quête du Samedi est secrète… soyez prêts à tout !
+      </div>
+      <!-- PERSONNAGES PROGRAMME -->
+      <div class="char-zone" style="max-width:600px;justify-content:center;gap:60px;padding-top:24px">
+
+  <!-- Personnage gauche -->
+  <div class="char-slot">
+    <div class="char-slot">
+    <div class="speech-bubble right-tail" style="max-width:155px;font-size:12px;margin:0 0 10px">
+      <strong style="font-family:'Bangers',cursive;color:#8b4513;font-style:normal">Obélix :</strong>
+      Et il y aura du sanglier le soir ?!
+    </div>
+    <div class="char-img-frame" style="width:180px;height:240px">
+      <img src="sangliers.png" style="width:100%;height:100%;object-fit:contain;display:block">
+    </div>
+    </div>
+  </div>
+
+  <!-- Personnage droit -->
+  <div class="char-slot">
+    <div class="speech-bubble left-tail" style="max-width:155px;font-size:12px;margin:0 0 10px">
+      <strong style="font-family:'Bangers',cursive;color:#cc2200;font-style:normal">Milexcus :</strong>
+      Ne faîtes pas attention à nous, nous ne faisons que passer.
+    </div>
+    <div class="char-img-frame" style="width:180px;height:240px">
+      <img src="Romains.png" style="width:100%;height:100%;object-fit:contain;display:block">
+    </div>
+  </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- ══════════════════════════════ PAGE 3 : INFOS PRATIQUES ══════════════════════════════ -->
+  <div id="page-infos" class="page">
+    <div class="infos-bg">
+      <div class="section-title">🗺️ Guide du Voyageur Gaulois</div>
+      <div class="info-section">
+        <div class="info-section-title">📍 Adresse du Village</div>
+        <div class="adress-bubble">
+          <strong>🏡 La Grange</strong>
+          550 Chemin de la Grange<br>
+          <strong style="font-size:15px;color:#333">05140 Aspremont</strong><br>
+          Hautes-Alpes (05), France
+        </div>
+        <!--
+          POUR INTÉGRER GOOGLE MAPS :
+          Remplace ce div.map-placeholder par l'<iframe> obtenu depuis
+          Google Maps > Partager > Intégrer une carte
+        -->
+        <div class="map-placeholder">
+          <small><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2846.2323441251406!2d5.714796074544045!3d44.48990579791778!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12cae1f0573c0b8d%3A0xffab35747f59ba39!2s550%20Chem.%20de%20la%20Grange%2C%2005140%20Aspremont!5e0!3m2!1sfr!2sfr!4v1776678520266!5m2!1sfr!2sfr" width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></small>
+        </div>
+      </div>
+      <div class="divider">⚔️ ─── ⚔️</div>
+      <div class="info-section" style="margin-top:16px">
+        <div class="info-section-title">🏕️ Hébergement & Logistique</div>
+        <div class="practical-grid">
+          <div class="practical-card"><span class="picon">🛖</span><div class="ptitle">Hébergement sur place</div><div class="ptext">Option de dormir en dortoir ou en tente selon votre préférence</div></div>
+          <div class="practical-card"><span class="picon">🛞</span><div class="ptitle">Accès & Parking</div><div class="ptext">En voiture - Depuis Grenoble ≈ 1h30. Parking disponible sur place.</div></div>
+          <div class="practical-card"><span class="picon">🐎</span><div class="ptitle">Covoiturage</div><div class="ptext">Dites nous si vous avez de la place dans votre chariot ou si vous en cherchez un, via le formulaire "Je Confirme !"</div></div>
+          <div class="practical-card"><span class="picon">🧺</span><div class="ptitle">Quoi apporter ?</div><div class="ptext">Costume pour le samedi soir ! Sac de couchage, chaussures pour se balader, maillot si la rivière n'est pas sèche.</div></div>
+          <div class="practical-card"><span class="picon">🌤️</span><div class="ptitle">Météo</div><div class="ptext">Chaud la journée, frais le soir. Prévoyez une veste !</div></div>
+          <div class="practical-card"><span class="picon">📜</span><div class="ptitle">Contact</div><div class="ptext">Pour toute question, contactez Axelle directement (ou Laurie) !</div></div>
+        </div>
+      </div>
+      <div style="padding:16px 0 0">
+        <div class="speech-bubble" style="max-width:500px;font-size:13px">
+          🏔️ <strong style="font-family:'Bangers',cursive;color:#5c1a00"> Site officiel de la BD </strong><br>
+          Vous pouvez trouver de l'inspiration pour le costume dans l'onglet personnage. https://asterix.com/
+        </div>
+      </div>
+      <!-- PERSONNAGES INFOS -->
+      <div class="char-zone" style="max-width:500px;justify-content:center;gap:40px;padding-top:24px">
+        <div class="char-slot">
+                    <div class="char-img-frame" style="width:310px;height:355px">
+            <img src="costumes.png" style="width:100%;height:100%;object-fit:contain;display:block">
+        </div>
+        </div>
+        <div class="char-slot">
+                <div class="char-img-frame" style="width:230px;height:270px">
+            <img src="obelix vole.png" style="width:100%;height:100%;object-fit:contain;display:block">
+        </div>
+      </div>
+    </div>
+  </div>
+ </div>
+
+
+  <!-- ══════════════════════════════ PAGE 4 : JE CONFIRME ══════════════════════════════ -->
+  <div id="page-confirmer" class="page">
+    <div class="confirm-bg">
+      <div class="section-title">✅ Confirme ta Présence !</div>
+      <div class="speech-bubble" style="max-width:500px;margin-bottom:20px;font-size:14px">
+        🐗 Rejoins-tu le festin gaulois ? Remplis ce parchemin et indique si tu peux covoiturer !
+      </div>
+      <div class="form-parchment">
+        <div class="parchment-title">📜 Parchemin de Présence</div>
+        <div class="form-field"><label>👤 Ton nom de Gaulois</label><input type="text" id="f-nom" placeholder="Ex : Obélifix, Assurancetourix…"></div>
+        <div class="form-field"><label>📧 Email</label><input type="email" id="f-email" placeholder="ton@email.com"></div>
+        <div class="form-field"><label>🗓️ Nuits sur place</label><textarea id="f-logement" placeholder="Précise à quel moment tu arriveras et à quel moment tu partiras..."></textarea></div>
+        <div class="form-field"><label>🍽️ Régime alimentaire</label><textarea id="f-regime" placeholder="Précise tes contraintes ou allergies alimentaires..."></textarea></div>
+        <div class="covoiturage-box">
+          <div class="covo-title">🚗 Covoiturage</div>
+          <div class="radio-group">
+            <label class="radio-label"><input type="radio" name="covo" value="offre" onchange="showCovo('offre')"> 🙋 J'ai de la place</label>
+            <label class="radio-label"><input type="radio" name="covo" value="cherche" onchange="showCovo('cherche')"> 🔍 Je cherche une voiture</label>
+            <label class="radio-label"><input type="radio" name="covo" value="aucun" onchange="showCovo('aucun')"> 🚗 Je viens seul(e)</label>
+          </div>
+          <div class="covo-extra" id="covo-offre">
+            <div class="form-field" style="margin-bottom:8px"><label>📍 Ville de départ</label><input type="text" id="f-depart-offre" placeholder="Ex : Lyon, Paris, Marseille…"></div>
+            <div class="form-field" style="margin-bottom:0"><label>💺 Places disponibles</label><select id="f-places"><option value="">-- Nombre --</option><option>1 place</option><option>2 places</option><option>3 places</option><option>4 places</option></select></div>
+          </div>
+          <div class="covo-extra" id="covo-cherche">
+            <div class="form-field" style="margin-bottom:0"><label>📍 Ville de départ souhaitée</label><input type="text" id="f-depart-cherche" placeholder="Ex : Lyon, Paris, Marseille…"></div>
+          </div>
+        </div>
+        <div class="form-field"><label>💬 Message pour Axelle</label><textarea id="f-message" placeholder="Dis-lui quelques mots ! Par Toutatis !"></textarea></div>
+        <button class="btn-submit" onclick="submitForm()">Je transmets mon message à Idéfix !</button>
+      </div>
+      <div class="success-bubble" id="success-msg">
+        <span class="big-icon">🎉</span>
+        <p>PAR TOUTATIS ! Tu es inscrit(e) !</p>
+        <p style="font-size:14px;color:#555;margin-top:6px;font-family:'Patrick Hand',cursive">Axelle a été prévenue. À très vite !</p>
+      </div>
+      <!-- PERSONNAGES CONFIRMER -->
+      <div class="char-zone" style="max-width:500px;justify-content:center;gap:40px;padding-top:24px">
+        <div class="char-slot">
+          <div class="char-img-frame" style="width:210px;height:255px">
+          <img src="assurancetourix.png" style="width:100%;height:100%;object-fit:contain;display:block">
+          </div>
+        </div>
+        <div class="char-slot">
+          <div class="char-img-frame" style="width:175px;height:185px">
+            <img src="potion.png"style="width:100%;height:100%;object-fit:contain;display:block">
+          </div>
+        </div>
+        <div class="char-slot">
+          <div class="char-img-frame" style="width:230px;height:270px">
+            <img src="trio.png" style="width:100%;height:100%;object-fit:contain;display:block">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════ PAGE 5 : PHOTOS & SOUVENIRS ══════════════════════════════ -->
+  <div id="page-photos" class="page">
+    <div class="photos-bg">
+      <div class="section-title">📸 Photos & Souvenirs</div>
+      <div style="max-width:580px;margin:0 auto 16px;text-align:center">
+        <div class="speech-bubble" style="font-size:13px;margin-bottom:16px">
+          🎞️ <strong style="font-family:'Bangers',cursive;color:#5c1a8b">Partage tes souvenirs gaulois !</strong><br>
+          Avant, pendant, après la fête… toutes les photos sont les bienvenues dans notre album du village !
+      <a href="https://drive.google.com/drive/folders/1L3evk6dc38Q-sAl6cPncFuH_51OJ9iMv?usp=sharing"
+   target="_blank"
+   style="display:block; max-width:500px; margin:0 auto 24px; text-decoration:none;">
+  <div class="photo-upload-zone" style="cursor:pointer">
+    <span class="upload-icon">📸</span>
+    <p>Voir & ajouter des photos !</p>
+    <small>Cliquez ici pour ouvrir l'album Google Photos partagé</small>
+  </div>
+</div>
+</a>
+      <!-- PERSONNAGES PHOTOS -->
+      <div class="char-zone" style="max-width:500px;justify-content:center;gap:40px;padding-top:24px">
+        <div class="char-slot">
+          <div class="speech-bubble left-tail" style="max-width:250px;font-size:20px;margin:0 0 10px">
+            <strong style="font-family:'Bangers',cursive;color:#cc2200;font-style:normal">Falbala :</strong> Souris, Obélix !
+          </div>
+          <div class="char-img-frame" style="width:210px;height:255px">
+            <img src="falbala.png" style="width:100%;height:100%;object-fit:contain;display:block">
+          </div>
+        </div>
+        <div class="char-slot">
+          <div class="speech-bubble right-tail" style="max-width:255px;font-size:20px;margin:0 0 10px">
+            <strong style="font-family:'Bangers',cursive;color:#8b4513;font-style:normal">Abraracourcix :</strong> Qui prend la photo ?
+          </div>
+          <div class="char-img-frame" style="width:570px;height:530px">
+            <img src="village.png" style="width:100%;height:100%;object-fit:contain;display:block">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- fin .sky -->
+
+<!-- FOOTER -->
+<div class="village-footer">
+  <p>🌳 Astérix et Obèlix fètent les 30 ans d'Axelle ! 🌳</p>
+  <p style="font-size:11px;color:#8b6914;margin-top:4px;font-family:'Patrick Hand',cursive;letter-spacing:0">Site privé réservé aux invités • Aspremont, Hautes-Alpes 2027</p>
+</div>
+
+
+<!-- ══════════════════════════════ JAVASCRIPT ══════════════════════════════ -->
+<script>
+
+  /* ── Navigation ── */
+  function showPage(name, btn) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+    document.getElementById('page-' + name).classList.add('active');
+    if (btn) btn.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  /* ══════════════════════════════════════════════════════
+     DÉCOMPTE AUTOMATIQUE
+     Cible : samedi 26 juin 2027 à 18h00 (début du festin)
+     Le décompte s'arrête et affiche un message de fête
+     une fois la date atteinte.
+  ══════════════════════════════════════════════════════ */
+  const FETE_DATE = new Date('2027-06-26T18:00:00');
+
+  function updateCountdown() {
+    const now  = new Date();
+    const diff = FETE_DATE - now;
+
+    const label   = document.getElementById('cd-label');
+    const numbers = document.getElementById('cd-numbers');
+
+    if (diff <= 0) {
+      label.textContent   = '';
+      numbers.className   = 'countdown-done';
+      numbers.innerHTML   = '🎉 C\'EST LA FÊTE !<br>PAR TOUTATIS !';
+      clearInterval(cdInterval);
+      return;
+    }
+
+    const totalSec = Math.floor(diff / 1000);
+    const jours    = Math.floor(totalSec / 86400);
+    const heures   = Math.floor((totalSec % 86400) / 3600);
+    const minutes  = Math.floor((totalSec % 3600) / 60);
+    const secondes = totalSec % 60;
+    const pad      = n => String(n).padStart(2, '0');
+
+    numbers.textContent = `${jours}j ${pad(heures)}h ${pad(minutes)}m ${pad(secondes)}s`;
+  }
+
+  updateCountdown();
+  const cdInterval = setInterval(updateCountdown, 1000);
+
+
+  /* ── Covoiturage ── */
+  function showCovo(type) {
+    document.querySelectorAll('.covo-extra').forEach(el => el.classList.remove('show'));
+    if (type === 'offre')   document.getElementById('covo-offre').classList.add('show');
+    if (type === 'cherche') document.getElementById('covo-cherche').classList.add('show');
+  }
+
+  /* ── Formulaire ── */
+ function submitForm() {
+  const nom    = document.getElementById('f-nom').value.trim();
+  const email  = document.getElementById('f-email').value.trim();
+  const nuits  = document.getElementById('f-logement').value;
+  const regime = document.getElementById('f-regime').value;
+  const covo   = document.querySelector('input[name="covo"]:checked');
+  const msg    = document.getElementById('f-message').value;
+
+  if (!nom || !email) {
+    alert('Par Toutatis ! Remplis au moins ton nom et ton email, Gaulois !');
+    return;
+  }
+
+  fetch('https://formspree.io/f/xbdqkqvp', {   // ← colle ton URL ici
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      nom:          nom,
+      email:        email,
+      nuits:        nuits,
+      regime:       regime,
+      covoiturage:  covo ? covo.value : 'non renseigné',
+      depart:       document.getElementById('f-depart-offre')?.value
+                    || document.getElementById('f-depart-cherche')?.value || '',
+      places:       document.getElementById('f-places')?.value || '',
+      message:      msg
+    })
+  })
+  .then(res => {
+    if (res.ok) {
+      document.getElementById('success-msg').classList.add('show');
+      document.querySelector('.form-parchment').style.opacity = '0.4';
+      document.querySelector('.form-parchment').style.pointerEvents = 'none';
+    } else {
+      alert('Erreur d\'envoi. Réessaie ou contacte Axelle directement !');
+    }
+  })
+  .catch(() => {
+    alert('Erreur réseau. Vérifie ta connexion, Gaulois !');
+  });
+}
+
+  /* ── Photos galerie ── */
+  function triggerUpload() { document.getElementById('file-input').click(); }
+  function handleFiles(e) {
+    Array.from(e.target.files).forEach(file => {
+      const reader = new FileReader();
+      reader.onload = ev => {
+        const frame = document.createElement('div');
+        frame.className = 'photo-frame';
+        frame.innerHTML = `<div class="photo-inner"><img src="${ev.target.result}" alt="${file.name}"></div><div class="photo-caption">${file.name.replace(/\.[^.]+$/, '')}</div>`;
+        document.getElementById('photo-grid').prepend(frame);
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  /* ── Personnages ── */
+  function uploadChar(inputId) { document.getElementById(inputId).click(); }
+  function loadChar(input, previewId) {
+    const file = input.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      document.getElementById(previewId).innerHTML =
+        `<img src="${ev.target.result}" style="width:100%;height:100%;object-fit:contain;display:block">`;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  /* ══════════════════════════════════════════════════════
+     VIDÉO LOCALE
+     Deux façons d'utiliser la vidéo :
+
+     Option A (hébergée) : place le fichier MP4 dans le même
+       dossier que ce HTML et remplis src="ton-fichier.mp4"
+       dans la balise <source> ci-dessus. Le lecteur s'affichera
+       automatiquement sans besoin de cliquer.
+
+     Option B (sélection manuelle, ci-dessous) :
+       L'invité clique ou glisse son fichier vidéo,
+       et le lecteur s'active immédiatement.
+  ══════════════════════════════════════════════════════ */
+   function loadLocalVideo(input) {
+    const file = input.files[0];
+    if (!file) return;
+    _playVideoFile(file);
+  }
+
+  function _playVideoFile(file) {
+    const video = document.getElementById('local-video');
+    const drop  = document.getElementById('video-drop-zone');
+    video.src   = URL.createObjectURL(file);
+    drop.style.display  = 'none';
+    video.style.display = 'block';
+    video.load();
+    video.play();
+  }
+
+  function videoDragOver(e) {
+    e.preventDefault();
+    document.getElementById('video-drop-zone').classList.add('dragover');
+  }
+  function videoDragLeave() {
+    document.getElementById('video-drop-zone').classList.remove('dragover');
+  }
+  function videoDrop(e) {
+    e.preventDefault();
+    document.getElementById('video-drop-zone').classList.remove('dragover');
+    const file = e.dataTransfer.files[0];
+    if (file && file.type.startsWith('video/')) _playVideoFile(file);
+  }
+/* ── CASQUES ROMAINS QUI TOMBENT (page accueil uniquement) ── */
+function lancerCasques() {
+  let actif = true;
+
+  function creerCasque() {
+    if (!actif) return;
+    const el = document.createElement('div');
+    el.className = 'casque';
+
+    const taille = (40 + Math.random() * 40) + 'px';
+    el.style.width  = taille;
+    el.style.height = taille;
+    el.innerHTML = '<img src="casque.png" style="width:100%;height:100%;object-fit:contain">';
+
+    el.style.left             = Math.random() * 100 + 'vw';
+    const duree               = 3 + Math.random() * 4;
+    el.style.animationDuration = duree + 's';
+    el.style.animationDelay   = '0s';
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), duree * 1000);
+  }
+
+  const intervalle = setInterval(creerCasque, 600);
+  window._casquesIntervalle = intervalle;
+}
+
+function arreterCasques() {
+  clearInterval(window._casquesIntervalle);
+  document.querySelectorAll('.casque').forEach(el => el.remove());
+}
+
+lancerCasques();
+
+const _showPageOriginal = showPage;
+window.showPage = function(name, btn) {
+  _showPageOriginal(name, btn);
+  if (name === 'accueil') {
+    lancerCasques();
+  } else {
+    arreterCasques();
+  }
+};
+
+</script>
+
+</body>
+</html>
