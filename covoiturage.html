@@ -407,7 +407,7 @@ function rendre(){
       </div>
       <div class="trajet">
         <span class="pt">🏁</span><div><div class="lieu">${esc(c.depart_lieu)}</div><div class="quand">${formaterDate(c.depart_le)}</div></div>
-        <span class="pt">🏡</span><div><div class="lieu">${esc(c.arrivee_lieu)}</div><div class="quand">${formaterDate(c.arrivee_le)}</div></div>
+        <span class="pt">🏡</span><div><div class="lieu">${esc(c.arrivee_lieu)}</div></div>
       </div>
       ${c.note?`<p class="note">« ${esc(c.note)} »</p>`:""}
       ${contact}
@@ -458,19 +458,27 @@ document.addEventListener("keydown",e=>{ if(e.key==="Escape") document.querySele
 
 $("#btnProposer").addEventListener("click",()=>{ $("#erreurChar").textContent=""; ouvrir("#voileChar"); setTimeout(()=>$("#fConducteur").focus(),50); });
 
-// Le sens inverse les lieux proposés par défaut
+// Le sens inverse les lieux proposés et n'affiche que la date utile
+function majDates(){
+  const retour=$("#fSens").value==="retour";
+  ["#fDepartDate","#fDepartHeure"].forEach(s=>{ $(s).parentElement.style.display=retour?"none":""; $(s).required=!retour; });
+  ["#fArriveeDate","#fArriveeHeure"].forEach(s=>{ $(s).parentElement.style.display=retour?"":"none"; $(s).required=retour; });
+}
 $("#fSens").addEventListener("change",e=>{
   const g="La Grange, Aspremont";
   if(e.target.value==="retour"){ if($("#fArrivee").value===g) $("#fArrivee").value=""; if(!$("#fDepart").value) $("#fDepart").value=g;
-    $("#fDepartDate").value=$("#fArriveeDate").value="2027-06-28"; }
+    $("#fArriveeDate").value="2027-06-28"; }
   else { if($("#fDepart").value===g) $("#fDepart").value=""; if(!$("#fArrivee").value) $("#fArrivee").value=g;
-    $("#fDepartDate").value=$("#fArriveeDate").value="2027-06-25"; }
+    $("#fDepartDate").value="2027-06-25"; }
+  majDates();
 });
-
+$("#formChar").addEventListener("reset",()=>setTimeout(majDates,0));
+majDates();
 $("#formChar").addEventListener("submit",async e=>{
   e.preventDefault();
-  const dep=$("#fDepartDate").value+"T"+$("#fDepartHeure").value, arr=$("#fArriveeDate").value+"T"+$("#fArriveeHeure").value;
-  if(arr<=dep){ $("#erreurChar").textContent="L'arrivée doit être après le départ… même avec de la potion magique !"; return; }
+  const retour=$("#fSens").value==="retour";
+  const dep=retour ? $("#fArriveeDate").value+"T"+$("#fArriveeHeure").value : $("#fDepartDate").value+"T"+$("#fDepartHeure").value;
+  const arr=dep;
   const o={
     conducteur:$("#fConducteur").value.trim(), sens:$("#fSens").value,
     depart_lieu:$("#fDepart").value.trim(), depart_le:dep,
