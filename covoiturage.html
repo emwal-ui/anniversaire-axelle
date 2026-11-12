@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Les Chars du Village — Covoiturage des 30 ans d'Axelle</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Patrick+Hand&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+/* =========================================================
+   CONFIGURATION — à remplir avec les infos de ton projet Supabase
+   (Project Settings → API). Laisse vide pour le mode démo.
+   ========================================================= */
+</style>
+<script>
+  const SUPABASE_URL = "https://nkgopamouwzmxjavvdzm.supabase.co/rest/v1/";      // ex. "https://abcdxyz.supabase.co"
+  const SUPABASE_ANON_KEY = "sb_publishable_GXrByMH0bP4bywfHUrb1VQ_FfQdzzL4"; // clé "anon public"
+</script>
+
+<style>
+:root{
+  --ciel1:#7cc4ef; --ciel2:#cfeefc;
+  --bois:#8b5a2b; --bois-f:#5e3a17; --bois-c:#b27a43;
+  --parchemin:#f6e7c1; --parchemin-f:#e8d29c;
+  --encre:#2b1d0e; --rouge:#d62828; --jaune:#f7c948; --vert:#3d8b37; --bleu:#1d4e89;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Patrick Hand',cursive; color:var(--encre); font-size:clamp(16px,1.6vw,19px);
+  background:linear-gradient(180deg,var(--ciel1) 0%,var(--ciel2) 55%,#e9f7d8 100%) fixed;
+  min-height:100vh; overflow-x:hidden;
+}
+/* ---------- Décor du village ---------- */
+.decor{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;background:linear-gradient(180deg,var(--ciel1) 0%,var(--ciel2) 55%,#e9f7d8 100%)}
+.soleil{position:absolute;top:6%;right:8%;width:110px;height:110px;border-radius:50%;
+  background:radial-gradient(circle,#fff6b0 0%,#ffd84a 55%,#f5b700 100%);
+  box-shadow:0 0 60px 20px rgba(255,216,74,.45);animation:pulse 6s ease-in-out infinite}
+@keyframes pulse{50%{transform:scale(1.06)}}
+.nuage{position:absolute;background:#fff;border-radius:100px;opacity:.9;animation:nuage linear infinite}
+.nuage::before,.nuage::after{content:"";position:absolute;background:#fff;border-radius:50%}
+.nuage::before{width:55%;height:160%;top:-70%;left:15%}
+.nuage::after{width:40%;height:130%;top:-50%;right:12%}
+.n1{width:160px;height:40px;top:12%;animation-duration:70s}
+.n2{width:110px;height:30px;top:24%;animation-duration:95s;animation-delay:-40s}
+.n3{width:200px;height:48px;top:6%;animation-duration:120s;animation-delay:-80s}
+@keyframes nuage{from{left:-260px}to{left:110vw}}
+.colline{position:absolute;bottom:-40px;border-radius:50% 50% 0 0}
+.c1{left:-10%;width:70%;height:200px;background:#7fb653}
+.c2{right:-15%;width:75%;height:240px;background:#6aa443}
+.c3{left:20%;width:60%;height:150px;background:#8cc35f}
+.sanglier{position:absolute;bottom:40px;font-size:34px;animation:trot 38s linear infinite;animation-delay:-10s}
+@keyframes trot{from{left:-60px;transform:scaleX(-1)}to{left:110vw;transform:scaleX(-1)}}
+
+/* ---------- Structure ---------- */
+.page{position:relative;z-index:1;max-width:1150px;margin:0 auto;padding:clamp(12px,3vw,32px) clamp(10px,3vw,28px) 120px}
+.retour{display:inline-block;font-family:'Bangers',cursive;letter-spacing:1px;font-size:1.05rem;
+  color:#fff8e6;text-decoration:none;padding:8px 18px;border-radius:6px;
+  background:repeating-linear-gradient(90deg,var(--bois) 0 18px,var(--bois-c) 18px 21px);
+  border:3px solid var(--bois-f);box-shadow:0 4px 0 var(--bois-f);transform:rotate(-2deg);transition:.2s}
+.retour:hover{transform:rotate(0) translateY(-2px)}
+
+/* Panneau titre en bois */
+.panneau{position:relative;margin:24px auto 10px;max-width:760px;text-align:center;
+  padding:22px 20px 18px;border-radius:14px;color:#fff8e6;
+  background:repeating-linear-gradient(0deg,var(--bois) 0 26px,var(--bois-c) 26px 29px,var(--bois) 29px 56px);
+  border:5px solid var(--bois-f);box-shadow:0 8px 0 var(--bois-f),0 14px 30px rgba(0,0,0,.25);transform:rotate(-1deg)}
+.panneau::before,.panneau::after{content:"";position:absolute;top:50%;width:14px;height:14px;border-radius:50%;
+  background:#3a250f;box-shadow:inset 2px 2px 0 #7a5530}
+.panneau::before{left:12px}.panneau::after{right:12px}
+.panneau h1{font-family:'Bangers',cursive;font-size:clamp(2rem,6vw,3.6rem);letter-spacing:3px;
+  text-shadow:3px 3px 0 var(--encre),-1px -1px 0 var(--encre),1px -1px 0 var(--encre),-1px 1px 0 var(--encre)}
+.panneau p{font-size:clamp(1rem,2.2vw,1.25rem);margin-top:4px}
+
+/* Héros : personnage + bulle */
+.heros{display:flex;align-items:flex-end;justify-content:center;gap:12px;margin:22px auto 8px;max-width:900px}
+.perso{width:clamp(90px,16vw,170px);flex-shrink:0;filter:drop-shadow(3px 5px 0 rgba(0,0,0,.2));animation:balance 3.5s ease-in-out infinite}
+@keyframes balance{50%{transform:rotate(-3deg) translateY(-4px)}}
+.bulle{position:relative;background:#fff;border:3px solid var(--encre);border-radius:30px;padding:16px 22px;
+  font-size:clamp(1rem,2vw,1.2rem);box-shadow:5px 5px 0 rgba(0,0,0,.18);max-width:560px}
+.bulle::after{content:"";position:absolute;left:-22px;bottom:22px;border:12px solid transparent;
+  border-right:20px solid var(--encre)}
+.bulle::before{content:"";position:absolute;left:-14px;bottom:24px;border:10px solid transparent;
+  border-right:16px solid #fff;z-index:1}
+.bulle.sans-queue::before,.bulle.sans-queue::after{display:none}
+.bulle b{font-family:'Bangers',cursive;letter-spacing:1px;font-weight:normal;color:var(--rouge)}
+
+/* Compteurs */
+.compteurs{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin:22px 0}
+.compteur{background:var(--parchemin);border:3px solid var(--encre);border-radius:10px;padding:8px 18px;text-align:center;
+  box-shadow:4px 4px 0 rgba(0,0,0,.2);min-width:130px}
+.compteur:nth-child(odd){transform:rotate(-2deg)}.compteur:nth-child(even){transform:rotate(1.5deg)}
+.compteur strong{display:block;font-family:'Bangers',cursive;font-size:2.2rem;letter-spacing:1px;color:var(--bleu);line-height:1}
+
+/* Barre d'actions */
+.barre{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin:8px 0 22px}
+.onglets{display:flex;flex-wrap:wrap;gap:8px}
+.onglet{font-family:'Bangers',cursive;letter-spacing:1px;font-size:1.1rem;cursor:pointer;border:3px solid var(--bois-f);
+  background:var(--bois-c);color:#fff8e6;padding:7px 16px;border-radius:6px;box-shadow:0 4px 0 var(--bois-f);transition:.15s}
+.onglet:hover{transform:translateY(-2px)}
+.onglet.actif{background:var(--jaune);color:var(--encre);transform:rotate(-2deg)}
+.btn{font-family:'Bangers',cursive;letter-spacing:1.5px;font-size:1.25rem;cursor:pointer;border:3px solid var(--encre);
+  background:var(--rouge);color:#fff;padding:10px 22px;border-radius:40px;box-shadow:4px 4px 0 var(--encre);transition:.15s}
+.btn:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--encre)}
+.btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--encre)}
+.btn.vert{background:var(--vert)}.btn.gris{background:#8a7d6b}.btn.petit{font-size:1rem;padding:6px 14px}
+
+/* Grille des chars */
+.grille{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:26px}
+.char{position:relative;background:var(--parchemin);border:3px solid var(--encre);border-radius:6px;padding:18px 18px 16px;
+  box-shadow:6px 6px 0 rgba(0,0,0,.22);
+  background-image:radial-gradient(circle at 20% 15%,rgba(255,255,255,.5),transparent 40%),
+    radial-gradient(circle at 85% 90%,rgba(160,110,40,.18),transparent 45%);
+  animation:entree .45s ease-out both}
+.char:nth-child(3n+1){transform:rotate(-.8deg)}.char:nth-child(3n+2){transform:rotate(.6deg)}
+@keyframes entree{from{opacity:0;transform:translateY(20px) scale(.96)}}
+.char-tete{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:10px}
+.char h3{font-family:'Bangers',cursive;font-size:1.6rem;letter-spacing:1px;line-height:1.05;color:var(--bleu)}
+.badge{font-family:'Bangers',cursive;letter-spacing:1px;font-size:.95rem;padding:3px 10px;border-radius:20px;border:2px solid var(--encre);white-space:nowrap}
+.badge.aller{background:#ffe08a}.badge.retour{background:#bfe3ff}
+.trajet{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;align-items:start;margin:10px 0;
+  background:rgba(255,255,255,.55);border:2px dashed var(--bois);border-radius:8px;padding:10px 12px}
+.trajet .pt{font-size:1.3rem;line-height:1.2}
+.trajet .lieu{font-weight:bold;font-size:1.08rem;line-height:1.2}
+.trajet .quand{font-size:.95rem;color:#5b4630}
+.trajet .fleche{grid-column:1/3;text-align:left;padding-left:4px;color:var(--bois);font-size:1.1rem;letter-spacing:2px}
+.note{font-size:.98rem;font-style:italic;margin:6px 0;color:#4a3720}
+.contact{font-size:.95rem;margin:4px 0}
+.contact a{color:var(--bleu)}
+/* Places */
+.places{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 8px}
+.siege{width:46px;height:46px;border-radius:50%;border:3px solid var(--encre);display:flex;align-items:center;justify-content:center;
+  font-family:'Bangers',cursive;font-size:1.05rem;letter-spacing:.5px}
+.siege.libre{background:#fff;border-style:dashed;color:#b8a888}
+.siege.pris{background:var(--jaune);box-shadow:2px 2px 0 var(--encre)}
+.dispo{font-family:'Bangers',cursive;letter-spacing:1px;font-size:1.15rem}
+.dispo.ok{color:var(--vert)}.dispo.plein{color:var(--rouge)}
+.passagers{list-style:none;display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 10px}
+.passagers li{background:#fff;border:2px solid var(--encre);border-radius:20px;padding:2px 6px 2px 12px;display:flex;align-items:center;gap:4px}
+.passagers button{border:none;background:none;cursor:pointer;font-size:1rem;color:var(--rouge);padding:0 4px;font-family:inherit}
+.monter{display:flex;gap:8px;margin-top:6px}
+.monter input{flex:1;min-width:0}
+input,select,textarea{font-family:'Patrick Hand',cursive;font-size:1.05rem;border:2px solid var(--encre);border-radius:8px;padding:7px 10px;
+  background:#fffdf5;color:var(--encre);width:100%}
+input:focus,select:focus,textarea:focus{outline:3px solid var(--jaune)}
+.char-pied{display:flex;justify-content:flex-end;margin-top:10px}
+.lien-suppr{background:none;border:none;font-family:inherit;font-size:.92rem;color:#8a6a4a;cursor:pointer;text-decoration:underline}
+/* Tampon COMPLET */
+.tampon{position:absolute;right:16px;bottom:44px;transform:rotate(-12deg);font-family:'Bangers',cursive;white-space:nowrap;
+  font-size:1.9rem;letter-spacing:3px;color:var(--rouge);border:4px solid var(--rouge);border-radius:8px;padding:0 12px;
+  opacity:.75;pointer-events:none;animation:tamp .4s cubic-bezier(.3,1.6,.6,1) both}
+@keyframes tamp{from{transform:rotate(-12deg) scale(2.2);opacity:0}}
+.onomato{position:absolute;top:-16px;right:-10px;font-family:'Bangers',cursive;font-size:1.4rem;color:var(--jaune);
+  -webkit-text-stroke:1.5px var(--encre);transform:rotate(12deg);letter-spacing:1px}
+
+/* Vide */
+.vide{text-align:center;padding:30px 10px}
+.vide .bulle{display:inline-block}
+
+/* ---------- Fenêtre (modale) ---------- */
+.voile{position:fixed;inset:0;background:rgba(43,29,14,.55);z-index:50;display:none;align-items:flex-start;justify-content:center;
+  padding:30px 12px;overflow-y:auto}
+.voile.ouvert{display:flex}
+.fenetre{background:var(--parchemin);border:4px solid var(--encre);border-radius:12px;max-width:620px;width:100%;padding:24px;
+  box-shadow:10px 10px 0 rgba(0,0,0,.3);animation:hop .35s cubic-bezier(.3,1.5,.6,1)}
+@keyframes hop{from{transform:scale(.7) rotate(-4deg);opacity:0}}
+.fenetre h2{font-family:'Bangers',cursive;font-size:2rem;letter-spacing:2px;color:var(--rouge);margin-bottom:6px}
+.champs{display:grid;grid-template-columns:1fr 1fr;gap:12px 14px;margin-top:14px}
+.champs .large{grid-column:1/3}
+.champs label{display:block;font-size:1rem;margin-bottom:3px;font-weight:bold}
+.raccourcis{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.raccourcis button{font-family:inherit;font-size:.88rem;border:2px solid var(--bois);background:#fff8e6;border-radius:14px;padding:1px 9px;cursor:pointer}
+.raccourcis button:hover{background:var(--jaune)}
+.actions{display:flex;gap:12px;justify-content:flex-end;flex-wrap:wrap;margin-top:20px}
+.erreur{color:var(--rouge);margin-top:10px;min-height:1.2em}
+
+/* Bandeau mode démo / état */
+.etat{position:fixed;bottom:12px;left:12px;z-index:40;background:#fff;border:2px solid var(--encre);border-radius:20px;
+  padding:4px 14px;font-size:.92rem;box-shadow:3px 3px 0 rgba(0,0,0,.2)}
+.etat .point{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;background:#aaa;vertical-align:middle}
+.etat.live .point{background:#2fbf4a;box-shadow:0 0 0 3px rgba(47,191,74,.25)}
+.etat.demo .point{background:#f0a500}
+.boum{position:fixed;z-index:60;font-family:'Bangers',cursive;font-size:3rem;color:var(--jaune);-webkit-text-stroke:2px var(--encre);
+  pointer-events:none;animation:boum 1s ease-out forwards}
+@keyframes boum{0%{transform:scale(.3) rotate(-15deg);opacity:0}30%{transform:scale(1.2) rotate(8deg);opacity:1}100%{transform:scale(1) translateY(-60px);opacity:0}}
+
+@media (max-width:768px){
+  .heros{flex-direction:column;align-items:center}
+  .bulle::before,.bulle::after{display:none}
+  .grille{grid-template-columns:1fr}
+}
+@media (max-width:600px){
+  .champs{grid-template-columns:1fr}.champs .large{grid-column:auto}
+  .barre{flex-direction:column;align-items:stretch}.onglets{justify-content:center}
+  .btn{width:100%}
+  .monter .btn{width:auto}
+  .etat{position:static;display:block;width:max-content;max-width:94%;margin:0 auto 20px;font-size:.85rem}
+  .soleil{width:70px;height:70px}
+}
+@media (max-width:380px){.siege{width:38px;height:38px;font-size:.9rem}.compteur{min-width:100px}}
+</style>
+</head>
+<body>
+
+<div class="decor" aria-hidden="true">
+  <div class="soleil"></div>
+  <div class="nuage n1"></div><div class="nuage n2"></div><div class="nuage n3"></div>
+  <div class="colline c2"></div><div class="colline c1"></div><div class="colline c3"></div>
+  <div class="sanglier">🐗</div>
+</div>
+
+<main class="page">
+  <a class="retour" href="index.html">← Retour au village</a>
+
+  <header class="panneau">
+    <h1>Les Chars du Village</h1>
+    <p>Covoiturage pour les 30 ans d'Axelle · La Grange, Aspremont · 25 → 28 juin 2027</p>
+  </header>
+
+  <section class="heros">
+    <!-- Mets obelix.png (fond transparent) dans le même dossier : il apparaîtra ici. -->
+    <img class="perso" src="obelix.png" alt="" onerror="this.style.display='none'">
+    <div class="bulle">
+      <b>Par Toutatis !</b> La Grange est perdue au fond de la Gaule… Que personne ne reste à pied :
+      les conducteurs proposent leur char, les autres y réservent une place. Les gares les plus proches
+      sont <strong>Aspres-sur-Buëch</strong>, <strong>Serres</strong> et <strong>Veynes-Dévoluy</strong>.
+    </div>
+  </section>
+
+  <section class="compteurs" aria-live="polite">
+    <div class="compteur"><strong id="nbChars">0</strong>chars en route</div>
+    <div class="compteur"><strong id="nbLibres">0</strong>places libres</div>
+    <div class="compteur"><strong id="nbPassagers">0</strong>Gaulois embarqués</div>
+  </section>
+
+  <div class="barre">
+    <div class="onglets" role="tablist">
+      <button class="onglet actif" data-filtre="tous">Tous les chars</button>
+      <button class="onglet" data-filtre="aller">Vers la Grange</button>
+      <button class="onglet" data-filtre="retour">Retour</button>
+      <button class="onglet" data-filtre="libres">Places libres</button>
+    </div>
+    <button class="btn" id="btnProposer">+ Je propose mon char</button>
+  </div>
+
+  <section class="grille" id="grille"></section>
+</main>
+
+<div class="etat" id="etat"><span class="point"></span><span id="etatTexte">Connexion…</span></div>
+
+<!-- Fenêtre : proposer un char -->
+<div class="voile" id="voileChar" role="dialog" aria-modal="true" aria-labelledby="titreChar">
+  <form class="fenetre" id="formChar" autocomplete="off">
+    <h2 id="titreChar">Proposer mon char</h2>
+    <p>Renseigne ton trajet : les autres invités pourront réserver une place directement.</p>
+    <div class="champs">
+      <div><label for="fConducteur">Conducteur·rice *</label><input id="fConducteur" required maxlength="40" placeholder="ex. Fabien"></div>
+      <div><label for="fSens">Sens *</label>
+        <select id="fSens"><option value="aller">Vers la Grange (aller)</option><option value="retour">Depuis la Grange (retour)</option></select></div>
+
+      <div class="large"><label for="fDepart">Lieu de départ *</label><input id="fDepart" required maxlength="80" placeholder="ex. Lyon Part-Dieu">
+        <div class="raccourcis" data-cible="fDepart"></div></div>
+      <div><label for="fDepartDate">Date de départ *</label><input type="date" id="fDepartDate" required min="2027-06-20" max="2027-07-05" value="2027-06-25"></div>
+      <div><label for="fDepartHeure">Heure de départ *</label><input type="time" id="fDepartHeure" required value="09:00"></div>
+
+      <div class="large"><label for="fArrivee">Lieu d'arrivée *</label><input id="fArrivee" required maxlength="80" value="La Grange, Aspremont">
+        <div class="raccourcis" data-cible="fArrivee"></div></div>
+      <div><label for="fArriveeDate">Date d'arrivée *</label><input type="date" id="fArriveeDate" required min="2027-06-20" max="2027-07-05" value="2027-06-25"></div>
+      <div><label for="fArriveeHeure">Heure d'arrivée *</label><input type="time" id="fArriveeHeure" required value="13:00"></div>
+
+      <div><label for="fPlaces">Places passagers *</label>
+        <select id="fPlaces"><option>1</option><option>2</option><option selected>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option></select></div>
+      <div><label for="fContact">Contact (facultatif)</label><input id="fContact" maxlength="60" placeholder="téléphone ou pseudo"></div>
+      <div class="large"><label for="fNote">Petit mot (facultatif)</label>
+        <textarea id="fNote" rows="2" maxlength="200" placeholder="ex. Je peux faire un crochet par la gare de Veynes. Coffre plein de sangliers."></textarea></div>
+    </div>
+    <p class="erreur" id="erreurChar"></p>
+    <div class="actions">
+      <button type="button" class="btn gris" data-fermer>Annuler</button>
+      <button type="submit" class="btn vert">En route !</button>
+    </div>
+  </form>
+</div>
+
+<!-- Fenêtre : confirmation -->
+<div class="voile" id="voileConfirm" role="dialog" aria-modal="true">
+  <div class="fenetre" style="max-width:460px">
+    <h2>Ils sont fous ces Romains ?</h2>
+    <p id="texteConfirm"></p>
+    <div class="actions">
+      <button type="button" class="btn gris" data-fermer>Non, je garde</button>
+      <button type="button" class="btn" id="btnConfirmer">Oui, supprimer</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* =========================================================
+   1. Couche de données : Supabase si configuré, sinon démo locale
+   ========================================================= */
+const LIEUX = ["La Grange, Aspremont","Gare d'Aspres-sur-Buëch","Gare de Serres","Gare de Veynes-Dévoluy","Gare de Gap","Lyon","Marseille","Grenoble"];
+const ONOMATOS = ["VROUM !","TCHOU !","HOP !","POUET !","ZOU !","PAF !","GLING !"];
+
+function creerStoreSupabase(){
+  const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  return {
+    mode:"live",
+    async charger(){
+      const [c,p] = await Promise.all([
+        sb.from("covoit_chars").select("*").order("depart_le",{ascending:true}),
+        sb.from("covoit_passagers").select("*").order("created_at",{ascending:true})
+      ]);
+      if(c.error) throw c.error; if(p.error) throw p.error;
+      return {chars:c.data, passagers:p.data};
+    },
+    async ajouterChar(o){ const {error}=await sb.from("covoit_chars").insert(o); if(error) throw error; },
+    async supprimerChar(id){ const {error}=await sb.from("covoit_chars").delete().eq("id",id); if(error) throw error; },
+    async ajouterPassager(char_id,nom){ const {error}=await sb.from("covoit_passagers").insert({char_id,nom}); if(error) throw error; },
+    async supprimerPassager(id){ const {error}=await sb.from("covoit_passagers").delete().eq("id",id); if(error) throw error; },
+    ecouter(cb){
+      sb.channel("covoit-axelle")
+        .on("postgres_changes",{event:"*",schema:"public",table:"covoit_chars"},cb)
+        .on("postgres_changes",{event:"*",schema:"public",table:"covoit_passagers"},cb)
+        .subscribe();
+      setInterval(cb, 30000); // filet de sécurité si le temps réel est coupé
+    }
+  };
+}
+
+function creerStoreDemo(){
+  const CLE="covoit-axelle-demo";
+  const lire=()=>{try{return JSON.parse(localStorage.getItem(CLE))||{chars:[],passagers:[]}}catch(e){return {chars:[],passagers:[]}}};
+  const ecrire=d=>{try{localStorage.setItem(CLE,JSON.stringify(d))}catch(e){}};
+  const uid=()=>Math.random().toString(36).slice(2)+Date.now().toString(36);
+  let cbs=[];
+  const notifier=()=>cbs.forEach(f=>f());
+  return {
+    mode:"demo",
+    async charger(){ const d=lire(); d.chars.sort((a,b)=>a.depart_le.localeCompare(b.depart_le)); return d; },
+    async ajouterChar(o){ const d=lire(); d.chars.push({...o,id:uid(),created_at:new Date().toISOString()}); ecrire(d); notifier(); },
+    async supprimerChar(id){ const d=lire(); d.chars=d.chars.filter(c=>c.id!==id); d.passagers=d.passagers.filter(p=>p.char_id!==id); ecrire(d); notifier(); },
+    async ajouterPassager(char_id,nom){
+      const d=lire(); const c=d.chars.find(x=>x.id===char_id);
+      if(c && d.passagers.filter(p=>p.char_id===char_id).length>=c.places) throw new Error("Char complet");
+      d.passagers.push({id:uid(),char_id,nom,created_at:new Date().toISOString()}); ecrire(d); notifier();
+    },
+    async supprimerPassager(id){ const d=lire(); d.passagers=d.passagers.filter(p=>p.id!==id); ecrire(d); notifier(); },
+    ecouter(cb){ cbs.push(cb); window.addEventListener("storage",e=>{if(e.key===CLE)cb()}); }
+  };
+}
+
+const store = (SUPABASE_URL && SUPABASE_ANON_KEY && window.supabase) ? creerStoreSupabase() : creerStoreDemo();
+
+/* =========================================================
+   2. Affichage
+   ========================================================= */
+let donnees={chars:[],passagers:[]}, filtre="tous";
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const initiales=n=>n.trim().split(/\s+/).map(m=>m[0]).join("").slice(0,2).toUpperCase();
+
+function formaterDate(iso){
+  if(!iso) return "";
+  const [d,t]=iso.split("T"); const [a,m,j]=d.split("-").map(Number);
+  const date=new Date(a,m-1,j);
+  const jour=date.toLocaleDateString("fr-FR",{weekday:"long",day:"numeric",month:"long"});
+  const heure=(t||"").slice(0,5).replace(":","h");
+  return jour.charAt(0).toUpperCase()+jour.slice(1)+(heure?" · "+heure:"");
+}
+
+function rendre(){
+  const {chars,passagers}=donnees;
+  const parChar=id=>passagers.filter(p=>p.char_id===id);
+  let totalLibres=0;
+  chars.forEach(c=>totalLibres+=Math.max(0,c.places-parChar(c.id).length));
+  $("#nbChars").textContent=chars.length;
+  $("#nbLibres").textContent=totalLibres;
+  $("#nbPassagers").textContent=passagers.length;
+
+  const liste=chars.filter(c=>{
+    if(filtre==="aller"||filtre==="retour") return c.sens===filtre;
+    if(filtre==="libres") return parChar(c.id).length<c.places;
+    return true;
+  });
+
+  const g=$("#grille");
+  if(!liste.length){
+    g.innerHTML=`<div class="vide" style="grid-column:1/-1"><div class="bulle sans-queue">
+      ${chars.length?"Aucun char ne correspond à ce filtre… Essaie un autre panneau !":"<b>Hmm…</b> Aucun char n'a encore pris la route. Sois le premier ou la première à proposer le tien !"}
+    </div></div>`;
+    return;
+  }
+
+  g.innerHTML=liste.map((c,i)=>{
+    const ps=parChar(c.id), libres=c.places-ps.length, plein=libres<=0;
+    const sieges=Array.from({length:c.places},(_,k)=>ps[k]
+      ?`<div class="siege pris" title="${esc(ps[k].nom)}">${esc(initiales(ps[k].nom))}</div>`
+      :`<div class="siege libre" title="Place libre">?</div>`).join("");
+    const contact=c.contact?`<p class="contact">📜 Contact : ${/^[+\d][\d\s.]{7,}$/.test(c.contact)?`<a href="tel:${esc(c.contact.replace(/[\s.]/g,""))}">${esc(c.contact)}</a>`:esc(c.contact)}</p>`:"";
+    return `<article class="char">
+      <span class="onomato">${ONOMATOS[i%ONOMATOS.length]}</span>
+      <div class="char-tete">
+        <h3>Le char de ${esc(c.conducteur)}</h3>
+        <span class="badge ${c.sens}">${c.sens==="aller"?"→ Aller":"← Retour"}</span>
+      </div>
+      <div class="trajet">
+        <span class="pt">🏁</span><div><div class="lieu">${esc(c.depart_lieu)}</div><div class="quand">${formaterDate(c.depart_le)}</div></div>
+        <span class="pt">🏡</span><div><div class="lieu">${esc(c.arrivee_lieu)}</div><div class="quand">${formaterDate(c.arrivee_le)}</div></div>
+      </div>
+      ${c.note?`<p class="note">« ${esc(c.note)} »</p>`:""}
+      ${contact}
+      <div class="places">${sieges}</div>
+      <p class="dispo ${plein?"plein":"ok"}">${plein?"Plus une seule place !":libres+" place"+(libres>1?"s":"")+" libre"+(libres>1?"s":"")+" sur "+c.places}</p>
+      ${ps.length?`<ul class="passagers">${ps.map(p=>`<li>${esc(p.nom)}<button title="Retirer ${esc(p.nom)}" data-retirer="${p.id}" data-nom="${esc(p.nom)}">✕</button></li>`).join("")}</ul>`:""}
+      ${plein?"":`<form class="monter" data-char="${c.id}"><input maxlength="40" placeholder="Ton prénom" aria-label="Ton prénom" required><button class="btn vert petit">Je monte !</button></form>`}
+      <div class="char-pied" style="min-height:1.6em"><button class="lien-suppr" data-suppr="${c.id}" data-nom="${esc(c.conducteur)}">Supprimer ce char</button></div>
+      ${plein?'<div class="tampon">COMPLET !</div>':""}
+    </article>`;
+  }).join("");
+}
+
+async function rafraichir(){
+  try{ donnees=await store.charger(); rendre(); }
+  catch(e){ console.error(e); etat("Problème de connexion à la base","") }
+}
+
+function etat(txt,cls){ const el=$("#etat"); el.className="etat "+cls; $("#etatTexte").textContent=txt; }
+
+function boum(x,y,mot){
+  const b=document.createElement("div"); b.className="boum"; b.textContent=mot;
+  b.style.left=(x-60)+"px"; b.style.top=(y-40)+"px"; document.body.appendChild(b);
+  setTimeout(()=>b.remove(),1000);
+}
+
+/* =========================================================
+   3. Interactions
+   ========================================================= */
+// Raccourcis de lieux
+document.querySelectorAll(".raccourcis").forEach(box=>{
+  box.innerHTML=LIEUX.map(l=>`<button type="button">${esc(l)}</button>`).join("");
+  box.addEventListener("click",e=>{ if(e.target.tagName==="BUTTON") document.getElementById(box.dataset.cible).value=e.target.textContent; });
+});
+
+// Onglets
+document.querySelectorAll(".onglet").forEach(o=>o.addEventListener("click",()=>{
+  document.querySelectorAll(".onglet").forEach(x=>x.classList.remove("actif"));
+  o.classList.add("actif"); filtre=o.dataset.filtre; rendre();
+}));
+
+// Fenêtres
+const ouvrir=id=>$(id).classList.add("ouvert");
+const fermer=el=>el.closest(".voile").classList.remove("ouvert");
+document.querySelectorAll("[data-fermer]").forEach(b=>b.addEventListener("click",()=>fermer(b)));
+document.querySelectorAll(".voile").forEach(v=>v.addEventListener("click",e=>{ if(e.target===v) v.classList.remove("ouvert"); }));
+document.addEventListener("keydown",e=>{ if(e.key==="Escape") document.querySelectorAll(".voile.ouvert").forEach(v=>v.classList.remove("ouvert")); });
+
+$("#btnProposer").addEventListener("click",()=>{ $("#erreurChar").textContent=""; ouvrir("#voileChar"); setTimeout(()=>$("#fConducteur").focus(),50); });
+
+// Le sens inverse les lieux proposés par défaut
+$("#fSens").addEventListener("change",e=>{
+  const g="La Grange, Aspremont";
+  if(e.target.value==="retour"){ if($("#fArrivee").value===g) $("#fArrivee").value=""; if(!$("#fDepart").value) $("#fDepart").value=g;
+    $("#fDepartDate").value=$("#fArriveeDate").value="2027-06-28"; }
+  else { if($("#fDepart").value===g) $("#fDepart").value=""; if(!$("#fArrivee").value) $("#fArrivee").value=g;
+    $("#fDepartDate").value=$("#fArriveeDate").value="2027-06-25"; }
+});
+
+$("#formChar").addEventListener("submit",async e=>{
+  e.preventDefault();
+  const dep=$("#fDepartDate").value+"T"+$("#fDepartHeure").value, arr=$("#fArriveeDate").value+"T"+$("#fArriveeHeure").value;
+  if(arr<=dep){ $("#erreurChar").textContent="L'arrivée doit être après le départ… même avec de la potion magique !"; return; }
+  const o={
+    conducteur:$("#fConducteur").value.trim(), sens:$("#fSens").value,
+    depart_lieu:$("#fDepart").value.trim(), depart_le:dep,
+    arrivee_lieu:$("#fArrivee").value.trim(), arrivee_le:arr,
+    places:+$("#fPlaces").value, contact:$("#fContact").value.trim()||null, note:$("#fNote").value.trim()||null
+  };
+  try{
+    await store.ajouterChar(o);
+    fermer(e.target); e.target.reset(); $("#fArrivee").value="La Grange, Aspremont";
+    boum(innerWidth/2,innerHeight/3,"VROUM !"); rafraichir();
+  }catch(err){ $("#erreurChar").textContent="Oups, le char n'a pas pu partir : "+(err.message||err); }
+});
+
+// Clics dans la grille : monter, retirer, supprimer
+let actionConfirmee=null;
+$("#grille").addEventListener("submit",async e=>{
+  const f=e.target.closest(".monter"); if(!f) return; e.preventDefault();
+  const nom=f.querySelector("input").value.trim(); if(!nom) return;
+  const btn=f.querySelector("button"); btn.disabled=true;
+  try{ await store.ajouterPassager(f.dataset.char,nom); const r=btn.getBoundingClientRect(); boum(r.left+r.width/2,r.top,"HOP !"); await rafraichir(); }
+  catch(err){ alertBulle("Trop tard, ce char vient d'être rempli !"); await rafraichir(); }
+  finally{ btn.disabled=false; }
+});
+$("#grille").addEventListener("click",e=>{
+  const r=e.target.closest("[data-retirer]"), s=e.target.closest("[data-suppr]");
+  if(r){ demander(`Retirer ${r.dataset.nom} de ce char ?`,()=>store.supprimerPassager(r.dataset.retirer)); }
+  if(s){ demander(`Supprimer le char de ${s.dataset.nom} ? Ses passagers perdront leur place.`,()=>store.supprimerChar(s.dataset.suppr)); }
+});
+function demander(texte,action){ $("#texteConfirm").textContent=texte; actionConfirmee=action; $("#btnConfirmer").style.display=""; ouvrir("#voileConfirm"); }
+$("#btnConfirmer").addEventListener("click",async e=>{
+  fermer(e.target); if(actionConfirmee){ try{ await actionConfirmee(); }catch(err){ console.error(err); } actionConfirmee=null; rafraichir(); }
+});
+function alertBulle(txt){ $("#texteConfirm").textContent=txt; actionConfirmee=null; $("#btnConfirmer").style.display="none"; ouvrir("#voileConfirm"); }
+
+/* =========================================================
+   4. Démarrage
+   ========================================================= */
+store.ecouter(rafraichir);
+rafraichir().then(()=>{
+  if(store.mode==="live") etat("Temps réel activé","live");
+  else etat("Mode démo — les données restent sur cet appareil","demo");
+});
+</script>
+</body>
+</html>
